@@ -154,9 +154,10 @@ export function determineWinner(playerTotal: number, dealerTotal: number): 'play
   return playerDiff < dealerDiff ? 'player' : 'dealer';
 }
 
-// ディーラーの行動を決定
-export function getDealerAction(hand: Card[]): PlayerAction {
+// ディーラーの行動を決定（プレイヤーの手札も考慮）
+export function getDealerAction(hand: Card[], playerHand: Card[]): PlayerAction {
   const total = calculateHandTotal(hand);
+  const playerTotal = calculateHandTotal(playerHand);
   
   // 手札が5枚の場合はスタンド
   if (hand.length >= 5) {
@@ -171,6 +172,65 @@ export function getDealerAction(hand: Card[]): PlayerAction {
   // Pure Sabaccの場合はスタンド
   if (checkPureSabacc(total)) {
     return 'stand';
+  }
+  
+  // プレイヤーがIdiot's Arrayを持っている場合、より積極的に行動
+  if (checkIdiotsArray(playerHand)) {
+    if (total < 15 && total > -15) {
+      return 'draw';
+    }
+  }
+  
+  // プレイヤーがPure Sabaccを持っている場合、より積極的に行動
+  if (checkPureSabacc(playerTotal)) {
+    if (total < 18 && total > -18) {
+      return 'draw';
+    }
+  }
+  
+  // プレイヤーとの得点差を詳細に分析
+  const scoreDifference = playerTotal - total;
+  const absPlayerTotal = Math.abs(playerTotal);
+  const absTotal = Math.abs(total);
+  
+  // プレイヤーが大幅にリードしている場合（10点以上差）
+  if (scoreDifference > 10) {
+    if (total < 15 && total > -15) {
+      return 'draw';
+    }
+  }
+  
+  // プレイヤーが大幅に負けている場合（10点以上差）
+  if (scoreDifference < -10) {
+    if (total >= 16 || total <= -16) {
+      return 'stand';
+    }
+  }
+  
+  // プレイヤーが23に近い場合（20点以上）
+  if (absPlayerTotal >= 20) {
+    if (total < 12 && total > -12) {
+      return 'draw';
+    }
+  }
+  
+  // プレイヤーが低得点の場合（5点以下）
+  if (absPlayerTotal <= 5) {
+    if (total >= 18 || total <= -18) {
+      return 'stand';
+    }
+  }
+  
+  // 自分が23に近い場合（20点以上）
+  if (absTotal >= 20) {
+    return 'stand';
+  }
+  
+  // 自分が低得点の場合（5点以下）
+  if (absTotal <= 5) {
+    if (hand.length < 4) {
+      return 'draw';
+    }
   }
   
   // 爆発の可能性が高い場合はスタンド
@@ -205,18 +265,38 @@ export function getDealerAction(hand: Card[]): PlayerAction {
     const hasLowValueCard = hand.some(card => card.value <= 3);
     const hasSpecialCard = hand.some(card => card.suit === null);
     
-    if (hasHighValueCard && !hasLowValueCard) {
-      // 高価値カードがある場合はロック
-      return 'lock';
-    } else if (hasLowValueCard && !hasHighValueCard) {
-      // 低価値カードがある場合は交換
-      return 'exchange';
-    } else if (hasSpecialCard) {
-      // 特殊カードがある場合はロック
-      return 'lock';
+    // プレイヤーの手札も考慮
+    const playerHasSpecialCard = playerHand.some(card => card.suit === null);
+    const playerHasHighValueCard = playerHand.some(card => card.value >= 10);
+    
+    // プレイヤーとの点数比較に基づく戦略
+    if (scoreDifference > 5) {
+      // プレイヤーがリードしている場合、より積極的に行動
+      if (hasLowValueCard) {
+        return 'exchange';
+      } else {
+        return Math.random() < 0.6 ? 'draw' : 'exchange';
+      }
+    } else if (scoreDifference < -5) {
+      // プレイヤーが負けている場合、より保守的に行動
+      if (hasHighValueCard) {
+        return 'lock';
+      } else {
+        return Math.random() < 0.7 ? 'stand' : 'lock';
+      }
     } else {
-      // それ以外はランダムに決定
-      return Math.random() < 0.5 ? 'exchange' : 'lock';
+      // 互角の場合、通常の戦略
+      if (hasHighValueCard && !hasLowValueCard) {
+        return 'lock';
+      } else if (hasLowValueCard && !hasHighValueCard) {
+        return 'exchange';
+      } else if (hasSpecialCard) {
+        return 'lock';
+      } else if (playerHasSpecialCard && !hasSpecialCard) {
+        return Math.random() < 0.7 ? 'draw' : 'exchange';
+      } else {
+        return Math.random() < 0.5 ? 'exchange' : 'lock';
+      }
     }
   }
   
@@ -247,8 +327,8 @@ export function getDealerAction(hand: Card[]): PlayerAction {
   return 'stand'; // デフォルト
 }
 
-// ディーラーの戦略的な行動を決定
-export function getDealerStrategy(hand: Card[]): {
+// ディーラーの戦略的な行動を決定（プレイヤーの手札も考慮）
+export function getDealerStrategy(hand: Card[], playerHand: Card[]): {
   shouldDraw: boolean;
   shouldExchange: boolean;
   shouldLock: boolean;
@@ -256,10 +336,8 @@ export function getDealerStrategy(hand: Card[]): {
   exchangeCardIndex?: number;
   lockCardIndex?: number;
 } {
-  const total = calculateHandTotal(hand);
-  
-  // 基本戦略
-  const action = getDealerAction(hand);
+  // 基本戦略（プレイヤーの手札も考慮）
+  const action = getDealerAction(hand, playerHand);
   
   // 交換するカードを選択
   let exchangeCardIndex: number | undefined;
@@ -274,12 +352,17 @@ export function getDealerStrategy(hand: Card[]): {
     }
   }
   
-  // ロックするカードを選択
+  // ロックするカードを選択（プレイヤーの手札も考慮）
   let lockCardIndex: number | undefined;
   if (action === 'lock' && hand.length > 0) {
     // 戦略的に最適なカードをロック対象とする
     const specialCards = hand.filter(card => card.suit === null);
     const highValueCards = hand.filter(card => card.value >= 10);
+    const playerSpecialCards = playerHand.filter(card => card.suit === null);
+    const playerHighValueCards = playerHand.filter(card => card.value >= 10);
+    
+    // プレイヤーとの点数比較に基づく戦略
+    const scoreDifference = calculateHandTotal(playerHand) - calculateHandTotal(hand);
     
     if (specialCards.length > 0) {
       // 特殊カードを優先的にロック
@@ -287,8 +370,35 @@ export function getDealerStrategy(hand: Card[]): {
     } else if (highValueCards.length > 0) {
       // 高価値カードをロック
       lockCardIndex = hand.findIndex(card => card.id === highValueCards[0].id);
+    } else if (playerSpecialCards.length > 0 && !specialCards.length) {
+      // プレイヤーが特殊カードを持っている場合、最も価値の高いカードをロック
+      let maxValue = -Infinity;
+      for (let i = 0; i < hand.length; i++) {
+        if (hand[i].value > maxValue) {
+          maxValue = hand[i].value;
+          lockCardIndex = i;
+        }
+      }
+    } else if (scoreDifference > 5) {
+      // プレイヤーがリードしている場合、最も価値の高いカードをロック
+      let maxValue = -Infinity;
+      for (let i = 0; i < hand.length; i++) {
+        if (hand[i].value > maxValue) {
+          maxValue = hand[i].value;
+          lockCardIndex = i;
+        }
+      }
+    } else if (scoreDifference < -5) {
+      // プレイヤーが負けている場合、最も価値の低いカードをロック（リスク回避）
+      let minValue = Infinity;
+      for (let i = 0; i < hand.length; i++) {
+        if (hand[i].value < minValue) {
+          minValue = hand[i].value;
+          lockCardIndex = i;
+        }
+      }
     } else {
-      // 最も価値の高いカードをロック
+      // 互角の場合、通常の戦略
       let maxValue = -Infinity;
       for (let i = 0; i < hand.length; i++) {
         if (hand[i].value > maxValue) {

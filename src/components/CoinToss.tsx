@@ -7,38 +7,27 @@ interface CoinTossProps {
 }
 
 const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [_, setFlipCount] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [result, setResult] = useState<'player' | 'dealer' | null>(null);
 
   useEffect(() => {
-    if (isVisible && !isFlipping) {
-      setIsFlipping(true);
-      setFlipCount(0);
+    if (isVisible && !isAnimating) {
+      setIsAnimating(true);
       setResult(null);
-      
-      // コイントスアニメーション開始
-      const flipInterval = setInterval(() => {
-        setFlipCount(prev => {
-          if (prev >= 10) {
-            // アニメーション終了、結果決定
-            const winner = Math.random() < 0.5 ? 'player' : 'dealer';
-            setResult(winner);
-            setIsFlipping(false);
-            clearInterval(flipInterval);
-            
-            // 結果表示後、コールバック実行
-            setTimeout(() => {
-              onComplete(winner);
-            }, 2000);
-            
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 200);
+
+      // コイントスアニメーション
+      setTimeout(() => {
+        // アニメーション終了、結果決定
+        const winner = Math.random() < 0.5 ? 'player' : 'dealer';
+        setResult(winner);
+        
+        setTimeout(() => {
+          // 結果表示後、コールバック実行
+          onComplete(winner);
+        }, 2000);
+      }, 3000);
     }
-  }, [isVisible, isFlipping, onComplete]);
+  }, [isVisible, isAnimating, onComplete]);
 
   if (!isVisible) return null;
 
@@ -48,7 +37,7 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
         <div className="coin-toss-title">引き分け！コイントスで勝者を決定</div>
         
         <div className="coin-container">
-          <div className={`coin ${isFlipping ? 'flipping' : ''} ${result ? 'result-' + result : ''}`}>
+          <div className={`coin ${isAnimating ? 'flipping' : ''} ${result ? 'result-' + result : ''}`}>
             <div className="coin-front">
               <div className="coin-side player-side">
                 <span className="coin-text">プレイヤー</span>

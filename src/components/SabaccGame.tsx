@@ -100,7 +100,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
       // ディーラーの戦略を決定
       setTimeout(() => {
         const newGameState = { ...gameState };
-        const strategy = getDealerStrategy(dealer.hand);
+        const strategy = getDealerStrategy(dealer.hand, newGameState.player.hand);
         
         // ディーラーは複数の行動を一度に実行
         let actionTaken = false;
@@ -190,7 +190,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         setGameState(newGameState);
       }, 1000);
     }
-  }, [gameState.currentTurn, gameState.gamePhase]);
+  }, [gameState.currentTurn, gameState.gamePhase, gameState]);
 
   const handleCoinTossComplete = (winner: 'player' | 'dealer') => {
     setShowCoinToss(false);
