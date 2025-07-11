@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# Sabacc Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+スター・ウォーズに登場するカードゲーム「Sabacc」をReact + TypeScriptで実装したWebアプリケーションです。
 
-Currently, two official plugins are available:
+## ゲーム概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Sabaccは、プレイヤーとディーラー（CPU）が対戦するカードゲームです。目標は手札の合計値を±23に近づけることです。
 
-## Expanding the ESLint configuration
+### カード構成
+- **スタンダードカード（60枚）**: 4つのスート（Flasks, Sabers, Staves, Coins）に各15枚
+- **特殊カード（16枚）**: 8種類のカードが各2枚ずつ
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### ゲームルール
+1. **初期手札**: 各プレイヤーに2枚ずつ配布
+2. **ターン制**: プレイヤーとディーラーが交互に行動
+3. **アクション**:
+   - **ドロー**: カードを1枚引く（最大5枚まで）
+   - **交換**: 手札1枚と山札のトップカードを交換
+   - **スタンド**: 手札を確定
+   - **ロック**: 手札1枚をSabacc Shiftから保護
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 特別な勝利条件
+- **Idiot's Array**: The Idiot + 2 + 3 → 即勝利
+- **Pure Sabacc**: 合計が23または-23 → 特別勝利
+- **爆発**: 合計が±24以上 → 即敗北
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Sabacc Shift
+ラウンド終了時に25%の確率で発生し、ロックされていないカードの値がランダムに変更されます。
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 技術スタック
+
+- **React 19**: UIフレームワーク
+- **TypeScript**: 型安全性
+- **Vite**: ビルドツール
+- **CSS3**: スタイリング
+
+## 開発サーバーの起動
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ビルド
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
+
+## ライセンス
+
+MIT License

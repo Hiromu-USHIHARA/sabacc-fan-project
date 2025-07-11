@@ -1,0 +1,65 @@
+.player-hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.player-info {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.player-info h3 {
+  margin: 0 0 10px 0;
+  color: #ecf0f1;
+  font-size: 1.5em;
+}
+
+.hand-total {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #f39c12;
+}
+
+.bomb-out {
+  color: #e74c3c;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.locked-card-info {
+  font-size: 0.9em;
+  color: #f39c12;
+  margin-top: 5px;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.stood-indicator {
+  background: #27ae60;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
