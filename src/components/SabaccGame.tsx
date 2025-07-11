@@ -25,7 +25,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
   const [gameState, setGameState] = useState<GameState>(initializeGame());
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | undefined>();
   const [showCoinToss, setShowCoinToss] = useState(false);
-  const [playerTurnPhase, setPlayerTurnPhase] = useState<'drawing' | 'exchanging' | 'locking' | 'complete'>('drawing');
+  const [playerTurnPhase, setPlayerTurnPhase] = useState<'drawing' | 'exchanging' | 'locking'>('drawing');
 
   const handlePlayerAction = (action: PlayerAction) => {
     if (gameState.currentTurn !== 'player' || gameState.gamePhase !== 'playing') {
@@ -63,7 +63,10 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging') {
           player.hasStood = true;
           newGameState.message = 'スタンドしました。';
-          setPlayerTurnPhase('complete');
+          // スタンドしたら自動的にディーラーのターンに移行
+          newGameState.currentTurn = 'dealer';
+          newGameState.message = 'スタンドしました。ディーラーのターンです。';
+          setPlayerTurnPhase('drawing');
         }
         break;
 
@@ -75,13 +78,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           setSelectedCardIndex(undefined);
           setPlayerTurnPhase('locking');
         }
-        break;
-
-      case 'complete':
-        // プレイヤーのターンを完了
-        newGameState.currentTurn = 'dealer';
-        newGameState.message = 'プレイヤーのターンが完了しました。ディーラーのターンです。';
-        setPlayerTurnPhase('drawing');
         break;
     }
 
@@ -236,10 +232,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
                   !gameState.player.lockedCard &&
                   (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking');
 
-  const canComplete = gameState.currentTurn === 'player' && 
-                     gameState.gamePhase === 'playing' &&
-                     (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking');
-
   return (
     <div className="sabacc-game">
       <div className="game-header">
@@ -289,7 +281,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           canExchange={canExchange}
           canStand={canStand}
           canLock={canLock}
-          canComplete={canComplete}
           selectedCardIndex={selectedCardIndex}
         />
       )}

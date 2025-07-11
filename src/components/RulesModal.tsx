@@ -62,7 +62,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </ul>
               </li>
               <li><strong>ディーラーの番</strong>: コンピュータが自動的に行動を決めます</li>
-              <li><strong>Sabacc Shift</strong>: 両者が手札を確定した後、25%の確率でカードの値が変わります</li>
+              <li><strong>Sabacc Shift</strong>: 両者が手札を確定した後、25%の確率でロックしていないカードの値が変わります</li>
               <li><strong>勝敗の決定</strong>: 特別な条件や通常の比較で勝者が決まります</li>
             </ol>
           </section>
@@ -78,7 +78,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
           <section className="rule-section">
             <h3>🎲 Sabacc Shift（サバック・シフト）</h3>
-            <p>両者が手札を確定した後、25%の確率でSabacc Shiftが起こります。ロックしていないカードの値が、ランダムに変わってしまいます。これがSabaccの醍醐味です！</p>
+            <p>両者が手札を確定した後、25%の確率でSabacc Shiftが起こります。ロックしていないカードの値が、ランダムに変わってしまいます。</p>
           </section>
 
           <section className="rule-section">

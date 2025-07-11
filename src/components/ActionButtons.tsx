@@ -8,7 +8,6 @@ interface ActionButtonsProps {
   canExchange: boolean;
   canStand: boolean;
   canLock: boolean;
-  canComplete: boolean;
   selectedCardIndex?: number;
 }
 
@@ -18,7 +17,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   canExchange,
   canStand,
   canLock,
-  canComplete,
   selectedCardIndex
 }) => {
   return (
@@ -53,14 +51,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         disabled={!canLock || selectedCardIndex === undefined}
       >
         🔒 ロック
-      </button>
-      
-      <button
-        className="action-btn complete-btn"
-        onClick={() => onAction('complete')}
-        disabled={!canComplete}
-      >
-        ✅ 完了
       </button>
     </div>
   );
