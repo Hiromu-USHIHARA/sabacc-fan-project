@@ -4,13 +4,13 @@ import {
   initializeGame, 
   drawCard, 
   calculateHandTotal, 
-  getDealerAction, 
+//   getDealerAction, 
   getDealerStrategy,
   performSabaccShift,
   determineWinner,
   checkIdiotsArray,
   checkPureSabacc,
-  checkBombOut
+//   checkBombOut
 } from '../utils/sabaccGame';
 import PlayerHand from './PlayerHand';
 import ActionButtons from './ActionButtons';
@@ -100,7 +100,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
       // ディーラーの戦略を決定
       setTimeout(() => {
         const newGameState = { ...gameState };
-        const strategy = getDealerStrategy(dealer.hand, newGameState.deck);
+        const strategy = getDealerStrategy(dealer.hand);
         
         // ディーラーは複数の行動を一度に実行
         let actionTaken = false;

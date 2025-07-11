@@ -212,7 +212,7 @@ export function getDealerAction(hand: Card[]): PlayerAction {
 }
 
 // ディーラーの戦略的な行動を決定
-export function getDealerStrategy(hand: Card[], deck: Card[]): {
+export function getDealerStrategy(hand: Card[]): {
   shouldDraw: boolean;
   shouldExchange: boolean;
   shouldLock: boolean;
@@ -220,7 +220,7 @@ export function getDealerStrategy(hand: Card[], deck: Card[]): {
   exchangeCardIndex?: number;
   lockCardIndex?: number;
 } {
-  const total = calculateHandTotal(hand);
+//   const total = calculateHandTotal(hand);
   
   // 基本戦略
   const action = getDealerAction(hand);

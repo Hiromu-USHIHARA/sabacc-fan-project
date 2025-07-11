@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TopPage from './components/TopPage';
 import SabaccGame from './components/SabaccGame';
 import RulesModal from './components/RulesModal';

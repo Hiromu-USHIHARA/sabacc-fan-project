@@ -8,7 +8,7 @@ interface CoinTossProps {
 
 const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
   const [isFlipping, setIsFlipping] = useState(false);
-  const [flipCount, setFlipCount] = useState(0);
+  const [_, setFlipCount] = useState(0);
   const [result, setResult] = useState<'player' | 'dealer' | null>(null);
 
   useEffect(() => {
