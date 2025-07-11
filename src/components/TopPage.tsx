@@ -1,50 +1,89 @@
 import React from 'react';
 import './TopPage.css';
 
+type Language = 'ja' | 'en';
+
 interface TopPageProps {
   onStartGame: () => void;
   onShowRules: () => void;
+  language: Language;
+  onLanguageChange: () => void;
 }
 
-const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules }) => {
+const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules, language, onLanguageChange }) => {
+  const texts = {
+    ja: {
+      title: 'Sabacc Fan',
+      subtitle: 'スター・ウォーズに登場するカードゲームのファンメイド作品です',
+      description: [
+        'プレイヤーとディーラーが対戦するSabaccゲームです．',
+        '目標は手札の合計値を23または-23に近づけることです．'
+      ],
+      startButton: '🎮 ゲーム開始',
+      rulesButton: '📖 ルール説明',
+      languageButton: '🌐 English',
+      features: [
+        { icon: '🧪⚔️🦯🪙', text: '4つのスート（Flasks, Sabers, Staves, Coins）' },
+        { icon: '⭐', text: '8種類の特殊カード' },
+        { icon: '🎲', text: 'Sabacc Shift機能' },
+        { icon: '🏆', text: '特別勝利条件（Idiot\'s Array, Pure Sabacc）' }
+      ]
+    },
+    en: {
+      title: 'Sabacc Fan',
+      subtitle: 'A fan-made card game from Star Wars',
+      description: [
+        'A Sabacc game where you compete against the dealer.',
+        'The goal is to get your hand total close to 23 or -23.'
+      ],
+      startButton: '🎮 Start Game',
+      rulesButton: '📖 Rules',
+      languageButton: '🌐 日本語',
+      features: [
+        { icon: '🧪⚔️🦯🪙', text: '4 suits (Flasks, Sabers, Staves, Coins)' },
+        { icon: '⭐', text: '8 special cards' },
+        { icon: '🎲', text: 'Sabacc Shift feature' },
+        { icon: '🏆', text: 'Special victory conditions (Idiot\'s Array, Pure Sabacc)' }
+      ]
+    }
+  };
+
+  const currentTexts = texts[language];
+
   return (
     <div className="top-page">
       <div className="top-content">
-        <h1 className="game-title">Sabacc Fan</h1>
-        <div className="game-subtitle">スター・ウォーズに登場するカードゲームのファンメイド作品です</div>
-        {/* <div className="fan-made-badge">Fan-Made Game</div> */}
+        <div className="header-section">
+          <h1 className="game-title">{currentTexts.title}</h1>
+          <button className="language-toggle" onClick={onLanguageChange}>
+            {currentTexts.languageButton}
+          </button>
+        </div>
+        
+        <div className="game-subtitle">{currentTexts.subtitle}</div>
         
         <div className="game-description">
-          <p>プレイヤーとディーラーが対戦するSabaccゲームです．</p>
-          <p>目標は手札の合計値を23または-23に近づけることです．</p>
+          {currentTexts.description.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </div>
         
         <div className="action-buttons">
           <button className="start-btn" onClick={onStartGame}>
-            🎮 ゲーム開始
+            {currentTexts.startButton}
           </button>
           <button className="rules-btn" onClick={onShowRules}>
-            📖 ルール説明
+            {currentTexts.rulesButton}
           </button>
         </div>
         
         <div className="game-features">
-          <div className="feature">
-            <span className="feature-icon">🧪⚔️🦯🪙</span>
-            <span>4つのスート（Flasks, Sabers, Staves, Coins）</span>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">⭐</span>
-            <span>8種類の特殊カード</span>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">🎲</span>
-            <span>Sabacc Shift機能</span>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">🏆</span>
-            <span>特別勝利条件（Idiot's Array, Pure Sabacc）</span>
-          </div>
+          {currentTexts.features.map((feature, index) => (
+            <div className="feature" key={index}>
+              <span className="feature-icon">{feature.icon}</span>
+              <span>{feature.text}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

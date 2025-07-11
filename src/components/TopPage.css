@@ -19,15 +19,46 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
 .game-title {
   font-size: 4em;
-  margin: 0 0 20px 0;
+  margin: 0;
   background: linear-gradient(45deg, #f39c12, #e74c3c, #9b59b6, #3498db);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
   animation: titleGlow 2s ease-in-out infinite alternate;
+  flex: 1;
+}
+
+.language-toggle {
+  padding: 8px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  min-width: 100px;
+}
+
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 @keyframes titleGlow {
@@ -142,8 +173,18 @@
     padding: 20px;
   }
   
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
   .game-title {
     font-size: 2.5em;
+  }
+  
+  .language-toggle {
+    font-size: 0.8em;
+    padding: 6px 12px;
   }
   
   .game-subtitle {
