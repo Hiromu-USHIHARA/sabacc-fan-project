@@ -27,10 +27,10 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <ul>
               <li><strong>通常のカード（60枚）</strong>
                 <ul>
-                  <li>Flasks（⚗️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Flasks（🧪）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
                   <li>Sabers（⚔️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
-                  <li>Staves（🏹）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
-                  <li>Coins（💰）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Staves（🦯）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Coins（🪙）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
                 </ul>
               </li>
               <li><strong>特別なカード（16枚）</strong>

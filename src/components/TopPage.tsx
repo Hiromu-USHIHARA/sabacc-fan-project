@@ -29,7 +29,7 @@ const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules }) => {
         
         <div className="game-features">
           <div className="feature">
-            <span className="feature-icon">⚔️</span>
+            <span className="feature-icon">🧪⚔️🦯🪙</span>
             <span>4つのスート（Flasks, Sabers, Staves, Coins）</span>
           </div>
           <div className="feature">

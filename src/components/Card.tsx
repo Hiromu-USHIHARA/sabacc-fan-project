@@ -21,10 +21,10 @@ const CardComponent: React.FC<CardProps> = ({
 }) => {
   const getSuitSymbol = (suit: string | null) => {
     switch (suit) {
-      case 'Flasks': return '⚗️';
+      case 'Flasks': return '🧪';
       case 'Sabers': return '⚔️';
-      case 'Staves': return '🏹';
-      case 'Coins': return '💰';
+      case 'Staves': return '🦯';
+      case 'Coins': return '🪙';
       default: return '⭐';
     }
   };
