@@ -58,7 +58,7 @@ Occurs with 25% probability at the end of each round, randomly changing the valu
 - **React 19**: UI framework
 - **TypeScript**: Type safety
 - **Vite**: Build tool
-- **CSS3**: Styling with modern features
+- **CSS**: Styling with modern features
 
 ## Getting Started
 
