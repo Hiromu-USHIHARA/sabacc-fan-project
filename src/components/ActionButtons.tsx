@@ -2,6 +2,8 @@ import React from 'react';
 import type { PlayerAction } from '../types/sabacc';
 import './ActionButtons.css';
 
+type Language = 'ja' | 'en';
+
 interface ActionButtonsProps {
   onAction?: (action: PlayerAction) => void;
   canDraw?: boolean;
@@ -11,6 +13,7 @@ interface ActionButtonsProps {
   selectedCardIndex?: number;
   showResetButton?: boolean;
   onReset?: () => void;
+  language?: Language;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -21,8 +24,28 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   canLock,
   selectedCardIndex,
   showResetButton = false,
-  onReset
+  onReset,
+  language = 'ja'
 }) => {
+  const texts = {
+    ja: {
+      draw: '🃏 ドロー',
+      exchange: '🔄 交換',
+      stand: '✋ スタンド',
+      lock: '🔒 ロック',
+      newGame: '🎮 新しいゲーム'
+    },
+    en: {
+      draw: '🃏 Draw',
+      exchange: '🔄 Exchange',
+      stand: '✋ Stand',
+      lock: '🔒 Lock',
+      newGame: '🎮 New Game'
+    }
+  };
+
+  const currentTexts = texts[language];
+
   return (
     <div className="action-buttons">
       {!showResetButton ? (
@@ -32,7 +55,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             onClick={() => onAction?.('draw')}
             disabled={!canDraw}
           >
-            🃏 ドロー
+            {currentTexts.draw}
           </button>
           
           <button
@@ -40,7 +63,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             onClick={() => onAction?.('exchange')}
             disabled={!canExchange || selectedCardIndex === undefined}
           >
-            🔄 交換
+            {currentTexts.exchange}
           </button>
           
           <button
@@ -48,7 +71,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             onClick={() => onAction?.('stand')}
             disabled={!canStand}
           >
-            ✋ スタンド
+            {currentTexts.stand}
           </button>
           
           <button
@@ -56,7 +79,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             onClick={() => onAction?.('lock')}
             disabled={!canLock || selectedCardIndex === undefined}
           >
-            🔒 ロック
+            {currentTexts.lock}
           </button>
         </>
       ) : (
@@ -64,7 +87,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           className="action-btn reset-btn"
           onClick={onReset}
         >
-          🎮 新しいゲーム
+          {currentTexts.newGame}
         </button>
       )}
     </div>

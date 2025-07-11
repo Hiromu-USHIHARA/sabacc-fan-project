@@ -1,13 +1,34 @@
 import React from 'react';
 import './Footer.css';
 
-const Footer: React.FC = () => {
+type Language = 'ja' | 'en';
+
+interface FooterProps {
+  language: Language;
+}
+
+const Footer: React.FC<FooterProps> = ({ language }) => {
+  const texts = {
+    ja: {
+      title: '🎮 Sabacc Fan - ファンメイド作品',
+      subtitle: 'スター・ウォーズに登場するカードゲームを体験しよう！',
+      disclaimer: 'This is a fan-made project and is not affiliated with Lucasfilm Ltd.'
+    },
+    en: {
+      title: '🎮 Sabacc Fan - Fan-Made Project',
+      subtitle: 'Experience the card game from Star Wars!',
+      disclaimer: 'This is a fan-made project and is not affiliated with Lucasfilm Ltd.'
+    }
+  };
+
+  const currentTexts = texts[language];
+
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-text">
-          <p>🎮 <strong>Sabacc Fan</strong> - ファンメイド作品</p>
-          <p>スター・ウォーズに登場するカードゲームを体験しよう！</p>
+          <p><strong>{currentTexts.title}</strong></p>
+          <p>{currentTexts.subtitle}</p>
         </div>
         <div className="footer-links">
           <p>
@@ -31,7 +52,7 @@ const Footer: React.FC = () => {
               Hiromu Ushihara
             </a>
           </p>
-          <p>This is a fan-made project and is not affiliated with Lucasfilm Ltd.</p>
+          <p>{currentTexts.disclaimer}</p>
         </div>
       </div>
     </footer>

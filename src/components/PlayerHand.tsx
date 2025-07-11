@@ -4,31 +4,54 @@ import CardComponent from './Card';
 import { calculateHandTotal } from '../utils/sabaccGame';
 import './PlayerHand.css';
 
+type Language = 'ja' | 'en';
+
 interface PlayerHandProps {
   player: Player;
   isCurrentTurn: boolean;
   onCardSelect?: (cardIndex: number) => void;
   selectedCardIndex?: number;
+  language?: Language;
 }
 
 const PlayerHand: React.FC<PlayerHandProps> = ({ 
   player, 
   isCurrentTurn, 
   onCardSelect, 
-  selectedCardIndex 
+  selectedCardIndex,
+  language = 'ja'
 }) => {
   const total = calculateHandTotal(player.hand);
+  
+  const texts = {
+    ja: {
+      dealer: 'ディーラー',
+      player: 'プレイヤー',
+      total: '合計:',
+      locked: 'ロック済み:',
+      stood: 'スタンド済み'
+    },
+    en: {
+      dealer: 'Dealer',
+      player: 'Player',
+      total: 'Total:',
+      locked: 'Locked:',
+      stood: 'Stood'
+    }
+  };
+
+  const currentTexts = texts[language];
   
   return (
     <div className="player-hand">
       <div className="player-info">
-        <h3>{player.isDealer ? 'ディーラー' : 'プレイヤー'}</h3>
+        <h3>{player.isDealer ? currentTexts.dealer : currentTexts.player}</h3>
         <div className="hand-total">
-          合計: <span className={total >= 24 || total <= -24 ? 'bomb-out' : ''}>{total}</span>
+          {currentTexts.total} <span className={total >= 24 || total <= -24 ? 'bomb-out' : ''}>{total}</span>
         </div>
         {player.lockedCard && (
           <div className="locked-card-info">
-            ロック済み: {player.lockedCard.name} ({player.lockedCard.value})
+            {currentTexts.locked} {player.lockedCard.name} ({player.lockedCard.value})
           </div>
         )}
       </div>
@@ -47,7 +70,7 @@ const PlayerHand: React.FC<PlayerHandProps> = ({
       </div>
       
       {player.hasStood && (
-        <div className="stood-indicator">スタンド済み</div>
+        <div className="stood-indicator">{currentTexts.stood}</div>
       )}
     </div>
   );
