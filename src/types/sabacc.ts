@@ -30,4 +30,4 @@ export interface GameState {
   message: string;
 }
 
-export type PlayerAction = 'draw' | 'exchange' | 'stand' | 'lock'; 
+export type PlayerAction = 'draw' | 'exchange' | 'stand' | 'lock' | 'complete'; 

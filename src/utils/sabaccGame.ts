@@ -164,11 +164,16 @@ export function getDealerAction(hand: Card[]): PlayerAction {
 }
 
 // Sabacc Shiftを実行
-export function performSabaccShift(hand: Card[]): Card[] {
+export function performSabaccShift(hand: Card[], lockedCard: Card | null): Card[] {
   const suits: Suit[] = ['Flasks', 'Sabers', 'Staves', 'Coins'];
   const values = [-15, -14, -13, -11, -10, -8, -2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   
   return hand.map(card => {
+    // ロックされたカードは変更しない
+    if (lockedCard && card.id === lockedCard.id) {
+      return card;
+    }
+    
     if (card.suit === null) {
       // 特殊カードは値のみ変更
       const newValue = values[Math.floor(Math.random() * values.length)];
