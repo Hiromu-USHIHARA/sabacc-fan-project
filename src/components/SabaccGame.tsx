@@ -223,7 +223,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
             📖 ルール
           </button>
         </div>
-        <div className="game-message">{gameState.message}</div>
         {gameState.gamePhase === 'finished' && (
           <button className="reset-btn" onClick={resetGame}>
             新しいゲーム
@@ -238,6 +237,9 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         />
         
         <div className="game-center">
+          <div className={`game-message ${gameState.gamePhase === 'finished' ? 'game-message-finished' : ''} ${gameState.gamePhase === 'sabaccShift' ? 'game-message-shift' : ''}`}>
+            {gameState.message}
+          </div>
           <div className="deck-info">
             残りカード: {gameState.deck.length}
           </div>
