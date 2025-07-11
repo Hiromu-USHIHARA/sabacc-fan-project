@@ -1,52 +1,128 @@
-# Sabacc Game
+# Sabacc Fan
 
-スター・ウォーズに登場するカードゲーム「Sabacc」をReact + TypeScriptで実装したWebアプリケーションです。
+A fan-made web application implementing the card game "Sabacc" from Star Wars using React + TypeScript.
 
-## ゲーム概要
+## Game Overview
 
-Sabaccは、プレイヤーとディーラー（CPU）が対戦するカードゲームです。目標は手札の合計値を23または-23に近づけることです。
+[Sabacc](https://starwars.fandom.com/wiki/Sabacc) is a card game where players compete against a dealer (CPU). The goal is to get your hand total close to 23 or -23.
 
-### カード構成
-- **スタンダードカード（60枚）**: 4つのスート（Flasks, Sabers, Staves, Coins）に各15枚
-- **特殊カード（16枚）**: 8種類のカードが各2枚ずつ
+### Card Composition
+- **Standard Cards (60 cards)**: 4 suits (Flasks, Sabers, Staves, Coins) with 15 cards each
+- **Special Cards (16 cards)**: 8 types of cards with 2 cards each
 
-### ゲームルール
-1. **初期手札**: 各プレイヤーに2枚ずつ配布
-2. **ターン制**: プレイヤーとディーラーが交互に行動
-3. **アクション**:
-   - **ドロー**: カードを1枚引く（最大5枚まで）
-   - **交換**: 手札1枚と山札のトップカードを交換
-   - **スタンド**: 手札を確定
-   - **ロック**: 手札1枚をSabacc Shiftから保護
+### Game Rules
+1. **Initial Hand**: Each player receives 2 cards
+2. **Turn-based**: Players and dealer take turns
+3. **Actions**:
+   - **Draw**: Draw 1 card (maximum 5 cards)
+   - **Exchange**: Exchange 1 card from hand with the top card from deck
+   - **Stand**: Finalize your hand
+   - **Lock**: Protect 1 card from Sabacc Shift
 
-### 特別な勝利条件
-- **Idiot's Array**: The Idiot + 2 + 3 → 即勝利
-- **Pure Sabacc**: 合計が23または-23 → 特別勝利
-- **爆発**: 合計が24以上または-24以下 → 即敗北
+### Special Victory Conditions
+- **Idiot's Array**: The Idiot + 2 + 3 → Instant victory
+- **Pure Sabacc**: Total of 23 or -23 → Special victory
+- **Bomb Out**: Total of 24 or higher, or -24 or lower → Instant defeat
 
 ### Sabacc Shift
-ラウンド終了時に25%の確率で発生し、ロックされていないカードの値がランダムに変更されます。
+Occurs with 25% probability at the end of each round, randomly changing the values of unlocked cards.
 
-## 技術スタック
+## Features
 
-- **React 19**: UIフレームワーク
-- **TypeScript**: 型安全性
-- **Vite**: ビルドツール
-- **CSS3**: スタイリング
+### Multi-language Support
+- **Japanese and English**: Complete localization of all game text
+- **Language Toggle**: Easy switching between languages via the language button
+- **Localized Content**: Game descriptions, rules, buttons, and UI elements
 
-## 開発サーバーの起動
+### Enhanced Game Experience
+- **Improved UI/UX**: Modern design with animations and responsive layout
+- **Game Message Display**: Centralized message display with color-coded status
+- **Coin Toss Animation**: Animated coin toss for tie-breaking scenarios
+- **Strategic Dealer AI**: Enhanced dealer logic considering hand values and special cards
+- **Turn-based Gameplay**: Proper turn management allowing multiple actions per turn
+
+### Technical Improvements
+- **TypeScript**: Full type safety throughout the application
+- **Component Architecture**: Modular React components with proper props
+- **Responsive Design**: Mobile-friendly interface
+- **Performance**: Optimized rendering and state management
+
+## Technology Stack
+
+- **React 19**: UI framework
+- **TypeScript**: Type safety
+- **Vite**: Build tool
+- **CSS3**: Styling with modern features
+
+## Getting Started
+
+### Development Server
 
 ```bash
 npm install
 npm run dev
 ```
 
-## ビルド
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-## ライセンス
+## Project Structure
+
+```
+sabacc-fan-project/
+├── src/
+│   ├── components/
+│   │   ├── TopPage.tsx          # Main landing page with language toggle
+│   │   ├── SabaccGame.tsx       # Main game component
+│   │   ├── RulesModal.tsx       # Rules explanation modal
+│   │   ├── Footer.tsx           # Footer component
+│   │   └── ...                  # Other game components
+│   ├── App.tsx                  # Main app with language state
+│   └── main.tsx                 # Entry point
+├── public/                      # Static assets
+└── index.html                   # HTML template
+```
+
+## Game Components
+
+### TopPage
+- Multi-language support with Japanese and English
+- Language toggle button
+- Game description and features
+- Start game and rules buttons
+
+### SabaccGame
+- Complete game logic implementation
+- Turn-based gameplay
+- Enhanced dealer AI
+- Coin toss animation for ties
+
+### RulesModal
+- Comprehensive rule explanations
+- Multi-language support
+- Interactive modal with proper styling
+
+### Footer
+- Project information
+- GitHub repository links
+- Multi-language support
+
+## Contributing
+
+This is a fan-made project created for educational and entertainment purposes. Feel free to contribute by:
+
+1. Forking the repository
+2. Creating a feature branch
+3. Making your changes
+4. Submitting a pull request
+
+## License
 
 MIT License
+
+## Disclaimer
+
+This is a fan-made project and is not affiliated with Lucasfilm Ltd. or Disney. All Star Wars related content belongs to their respective owners.
