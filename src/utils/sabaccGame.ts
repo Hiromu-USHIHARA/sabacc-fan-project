@@ -174,38 +174,65 @@ export function getDealerAction(hand: Card[]): PlayerAction {
   }
   
   // 爆発の可能性が高い場合はスタンド
-  if (total >= 20 || total <= -20) {
+  if (total >= 22 || total <= -22) {
     return 'stand';
   }
   
-  // 手札が4枚で、合計が15以上または-15以下の場合はスタンド
-  if (hand.length >= 4 && (total >= 15 || total <= -15)) {
+  // 手札が4枚で、合計が16以上または-16以下の場合はスタンド
+  if (hand.length >= 4 && (total >= 16 || total <= -16)) {
     return 'stand';
   }
   
-  // 手札が3枚で、合計が18以上または-18以下の場合はスタンド
-  if (hand.length >= 3 && (total >= 18 || total <= -18)) {
+  // 手札が3枚で、合計が19以上または-19以下の場合はスタンド
+  if (hand.length >= 3 && (total >= 19 || total <= -19)) {
     return 'stand';
   }
   
-  // 手札が2枚で、合計が20以上または-20以下の場合はスタンド
-  if (hand.length >= 2 && (total >= 20 || total <= -20)) {
+  // 手札が2枚で、合計が21以上または-21以下の場合はスタンド
+  if (hand.length >= 2 && (total >= 21 || total <= -21)) {
     return 'stand';
   }
   
-  // 低い合計値の場合はカードを引く
-  if (total < 10 && total > -10) {
+  // 非常に低い合計値の場合はカードを引く
+  if (total < 8 && total > -8) {
     return 'draw';
   }
   
-  // 中程度の合計値の場合は交換またはロック
-  if (total >= 10 && total < 15 || total <= -10 && total > -15) {
-    return Math.random() < 0.6 ? 'exchange' : 'lock';
+  // 中程度の合計値の場合は戦略的に行動
+  if (total >= 8 && total < 16 || total <= -8 && total > -16) {
+    // 手札の内容を分析して最適な行動を決定
+    const hasHighValueCard = hand.some(card => card.value >= 10);
+    const hasLowValueCard = hand.some(card => card.value <= 3);
+    const hasSpecialCard = hand.some(card => card.suit === null);
+    
+    if (hasHighValueCard && !hasLowValueCard) {
+      // 高価値カードがある場合はロック
+      return 'lock';
+    } else if (hasLowValueCard && !hasHighValueCard) {
+      // 低価値カードがある場合は交換
+      return 'exchange';
+    } else if (hasSpecialCard) {
+      // 特殊カードがある場合はロック
+      return 'lock';
+    } else {
+      // それ以外はランダムに決定
+      return Math.random() < 0.5 ? 'exchange' : 'lock';
+    }
+  }
+  
+  // 高い合計値の場合は慎重に行動
+  if (total >= 16 && total < 22 || total <= -16 && total > -22) {
+    const hasHighValueCard = hand.some(card => card.value >= 12);
+    if (hasHighValueCard) {
+      return 'lock';
+    } else {
+      return Math.random() < 0.7 ? 'stand' : 'lock';
+    }
   }
   
   // それ以外の場合はランダムに行動を決定
   const actions: PlayerAction[] = ['draw', 'exchange', 'lock', 'stand'];
-  const weights = [0.3, 0.3, 0.2, 0.2]; // 各行動の重み
+  const weights = [0.2, 0.3, 0.3, 0.2]; // 各行動の重み
   
   const random = Math.random();
   let cumulativeWeight = 0;
@@ -229,7 +256,7 @@ export function getDealerStrategy(hand: Card[]): {
   exchangeCardIndex?: number;
   lockCardIndex?: number;
 } {
-//   const total = calculateHandTotal(hand);
+  const total = calculateHandTotal(hand);
   
   // 基本戦略
   const action = getDealerAction(hand);
@@ -250,12 +277,24 @@ export function getDealerStrategy(hand: Card[]): {
   // ロックするカードを選択
   let lockCardIndex: number | undefined;
   if (action === 'lock' && hand.length > 0) {
-    // 最も価値の高いカードをロック対象とする
-    let maxValue = -Infinity;
-    for (let i = 0; i < hand.length; i++) {
-      if (hand[i].value > maxValue) {
-        maxValue = hand[i].value;
-        lockCardIndex = i;
+    // 戦略的に最適なカードをロック対象とする
+    const specialCards = hand.filter(card => card.suit === null);
+    const highValueCards = hand.filter(card => card.value >= 10);
+    
+    if (specialCards.length > 0) {
+      // 特殊カードを優先的にロック
+      lockCardIndex = hand.findIndex(card => card.id === specialCards[0].id);
+    } else if (highValueCards.length > 0) {
+      // 高価値カードをロック
+      lockCardIndex = hand.findIndex(card => card.id === highValueCards[0].id);
+    } else {
+      // 最も価値の高いカードをロック
+      let maxValue = -Infinity;
+      for (let i = 0; i < hand.length; i++) {
+        if (hand[i].value > maxValue) {
+          maxValue = hand[i].value;
+          lockCardIndex = i;
+        }
       }
     }
   }
