@@ -53,8 +53,9 @@
   .footer-content {
     padding: 0 15px;
   }
-  
-  .footer-text, .footer-links {
+
+  .footer-text,
+  .footer-links {
     font-size: 0.8em;
   }
-} 
+}

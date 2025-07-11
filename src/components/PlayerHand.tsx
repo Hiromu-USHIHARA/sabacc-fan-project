@@ -1,7 +1,7 @@
-import React from 'react';
+import type React from 'react';
 import type { Player } from '../types/sabacc';
-import CardComponent from './Card';
 import { calculateHandTotal } from '../utils/sabaccGame';
+import CardComponent from './Card';
 import './PlayerHand.css';
 
 type Language = 'ja' | 'en';
@@ -14,48 +14,52 @@ interface PlayerHandProps {
   language?: Language;
 }
 
-const PlayerHand: React.FC<PlayerHandProps> = ({ 
-  player, 
-  isCurrentTurn, 
-  onCardSelect, 
+const PlayerHand: React.FC<PlayerHandProps> = ({
+  player,
+  isCurrentTurn,
+  onCardSelect,
   selectedCardIndex,
-  language = 'ja'
+  language = 'ja',
 }) => {
   const total = calculateHandTotal(player.hand);
-  
+
   const texts = {
     ja: {
       dealer: 'ディーラー',
       player: 'プレイヤー',
       total: '合計:',
       locked: 'ロック済み:',
-      stood: 'スタンド済み'
+      stood: 'スタンド済み',
     },
     en: {
       dealer: 'Dealer',
       player: 'Player',
       total: 'Total:',
       locked: 'Locked:',
-      stood: 'Stood'
-    }
+      stood: 'Stood',
+    },
   };
 
   const currentTexts = texts[language];
-  
+
   return (
     <div className="player-hand">
       <div className="player-info">
         <h3>{player.isDealer ? currentTexts.dealer : currentTexts.player}</h3>
         <div className="hand-total">
-          {currentTexts.total} <span className={total >= 24 || total <= -24 ? 'bomb-out' : ''}>{total}</span>
+          {currentTexts.total}{' '}
+          <span className={total >= 24 || total <= -24 ? 'bomb-out' : ''}>
+            {total}
+          </span>
         </div>
         {player.lockedCard && (
           <div className="locked-card-info">
-            {currentTexts.locked} {player.lockedCard.name} ({player.lockedCard.value})
+            {currentTexts.locked} {player.lockedCard.name} (
+            {player.lockedCard.value})
           </div>
         )}
       </div>
-      
+
       <div className="cards-container">
         {player.hand.map((card, index) => (
           <CardComponent
@@ -68,7 +72,7 @@ const PlayerHand: React.FC<PlayerHandProps> = ({
           />
         ))}
       </div>
-      
+
       {player.hasStood && (
         <div className="stood-indicator">{currentTexts.stood}</div>
       )}
@@ -76,4 +80,4 @@ const PlayerHand: React.FC<PlayerHandProps> = ({
   );
 };
 
-export default PlayerHand; 
+export default PlayerHand;

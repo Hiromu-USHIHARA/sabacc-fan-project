@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import TopPage from './components/TopPage';
-import SabaccGame from './components/SabaccGame';
-import RulesModal from './components/RulesModal';
 import Footer from './components/Footer';
+import RulesModal from './components/RulesModal';
+import SabaccGame from './components/SabaccGame';
+import TopPage from './components/TopPage';
 import './App.css';
 
 type Language = 'ja' | 'en';
@@ -32,7 +32,7 @@ function App() {
     <div className="App">
       {currentPage === 'top' ? (
         <>
-          <TopPage 
+          <TopPage
             onStartGame={handleStartGame}
             onShowRules={handleShowRules}
             language={language}
@@ -42,16 +42,16 @@ function App() {
         </>
       ) : (
         <>
-          <SabaccGame 
-            onBackToTop={handleBackToTop} 
+          <SabaccGame
+            onBackToTop={handleBackToTop}
             onShowRules={handleShowRules}
             language={language}
           />
           <Footer language={language} />
         </>
       )}
-      
-      <RulesModal 
+
+      <RulesModal
         isOpen={isRulesModalOpen}
         onClose={() => setIsRulesModalOpen(false)}
         language={language}

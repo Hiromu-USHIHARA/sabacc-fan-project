@@ -3,7 +3,7 @@
   background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
   color: white;
   padding: 20px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .game-header {
@@ -110,8 +110,12 @@
 }
 
 @keyframes messageGlow {
-  from { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
-  to { box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
+  from {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  to {
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+  }
 }
 
 .game-message-finished {
@@ -174,31 +178,32 @@
   .sabacc-game {
     padding: 10px;
   }
-  
+
   .title-section h1 {
     font-size: 2em;
   }
-  
+
   .fan-made-subtitle {
     font-size: 0.8em;
   }
-  
+
   .game-message {
     font-size: 1em;
   }
-  
+
   .header-top {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .title-section {
     order: -1;
   }
-  
-  .back-btn, .rules-btn {
+
+  .back-btn,
+  .rules-btn {
     font-size: 0.9em;
     padding: 8px 16px;
     min-width: 120px;
   }
-} 
+}

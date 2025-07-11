@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import type { GameState, PlayerAction } from '../types/sabacc';
-import { 
-  initializeGame, 
-  drawCard, 
-  calculateHandTotal, 
-//   getDealerAction, 
-  getDealerStrategy,
-  performSabaccShift,
-  determineWinner,
+import {
+  calculateHandTotal,
   checkIdiotsArray,
   checkPureSabacc,
-//   checkBombOut
+  determineWinner,
+  drawCard,
+  //   getDealerAction,
+  getDealerStrategy,
+  initializeGame,
+  performSabaccShift,
+  //   checkBombOut
 } from '../utils/sabaccGame';
-import PlayerHand from './PlayerHand';
 import ActionButtons from './ActionButtons';
 import CoinToss from './CoinToss';
+import PlayerHand from './PlayerHand';
 import './SabaccGame.css';
 
 type Language = 'ja' | 'en';
@@ -25,11 +26,19 @@ interface SabaccGameProps {
   language: Language;
 }
 
-const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, language }) => {
+const SabaccGame: React.FC<SabaccGameProps> = ({
+  onBackToTop,
+  onShowRules,
+  language,
+}) => {
   const [gameState, setGameState] = useState<GameState>(initializeGame());
-  const [selectedCardIndex, setSelectedCardIndex] = useState<number | undefined>();
+  const [selectedCardIndex, setSelectedCardIndex] = useState<
+    number | undefined
+  >();
   const [showCoinToss, setShowCoinToss] = useState(false);
-  const [playerTurnPhase, setPlayerTurnPhase] = useState<'drawing' | 'exchanging' | 'locking'>('drawing');
+  const [playerTurnPhase, setPlayerTurnPhase] = useState<
+    'drawing' | 'exchanging' | 'locking'
+  >('drawing');
 
   const texts = {
     ja: {
@@ -47,13 +56,13 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         dealerTurnComplete: 'ディーラーのターンが完了しました．',
         sabaccShiftPending: 'Sabacc Shiftが発生する可能性があります...',
         sabaccShiftOccurred: 'Sabacc Shiftが発生しました！',
-        idiotsArrayPlayer: 'Idiot\'s Array！プレイヤーの勝利！',
-        idiotsArrayDealer: 'Idiot\'s Array！ディーラーの勝利！',
+        idiotsArrayPlayer: "Idiot's Array！プレイヤーの勝利！",
+        idiotsArrayDealer: "Idiot's Array！ディーラーの勝利！",
         pureSabaccPlayer: 'Pure Sabacc！プレイヤーの勝利！',
         pureSabaccDealer: 'Pure Sabacc！ディーラーの勝利！',
         playerVictory: 'プレイヤーの勝利！',
-        dealerVictory: 'ディーラーの勝利！'
-      }
+        dealerVictory: 'ディーラーの勝利！',
+      },
     },
     en: {
       backButton: '← Back to Top',
@@ -64,20 +73,20 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         cardDrawn: 'Card drawn.',
         cardExchanged: 'Card exchanged.',
         stood: 'Stand.',
-        dealerTurn: 'Stand. Dealer\'s turn.',
+        dealerTurn: "Stand. Dealer's turn.",
         gameStart: 'Game started! Your turn.',
         cardLocked: 'Card locked in interference field.',
-        dealerTurnComplete: 'Dealer\'s turn completed.',
+        dealerTurnComplete: "Dealer's turn completed.",
         sabaccShiftPending: 'Sabacc Shift may occur...',
         sabaccShiftOccurred: 'Sabacc Shift occurred!',
-        idiotsArrayPlayer: 'Idiot\'s Array! Player wins!',
-        idiotsArrayDealer: 'Idiot\'s Array! Dealer wins!',
+        idiotsArrayPlayer: "Idiot's Array! Player wins!",
+        idiotsArrayDealer: "Idiot's Array! Dealer wins!",
         pureSabaccPlayer: 'Pure Sabacc! Player wins!',
         pureSabaccDealer: 'Pure Sabacc! Dealer wins!',
         playerVictory: 'Player wins!',
-        dealerVictory: 'Dealer wins!'
-      }
-    }
+        dealerVictory: 'Dealer wins!',
+      },
+    },
   };
 
   const currentTexts = texts[language];
@@ -85,15 +94,18 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
   // ゲーム開始時のメッセージを設定
   useEffect(() => {
     if (gameState.message === '') {
-      setGameState(prev => ({
+      setGameState((prev) => ({
         ...prev,
-        message: currentTexts.messages.gameStart
+        message: currentTexts.messages.gameStart,
       }));
     }
   }, [currentTexts.messages.gameStart]);
 
   const handlePlayerAction = (action: PlayerAction) => {
-    if (gameState.currentTurn !== 'player' || gameState.gamePhase !== 'playing') {
+    if (
+      gameState.currentTurn !== 'player' ||
+      gameState.gamePhase !== 'playing'
+    ) {
       return;
     }
 
@@ -112,8 +124,11 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         break;
 
       case 'exchange':
-        if (selectedCardIndex !== undefined && newGameState.deck.length > 0 && 
-            (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging')) {
+        if (
+          selectedCardIndex !== undefined &&
+          newGameState.deck.length > 0 &&
+          (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging')
+        ) {
           const { card: newCard, newDeck } = drawCard(newGameState.deck);
           const oldCard = player.hand[selectedCardIndex];
           player.hand[selectedCardIndex] = newCard;
@@ -136,8 +151,13 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         break;
 
       case 'lock':
-        if (selectedCardIndex !== undefined && !player.lockedCard && 
-            (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking')) {
+        if (
+          selectedCardIndex !== undefined &&
+          !player.lockedCard &&
+          (playerTurnPhase === 'drawing' ||
+            playerTurnPhase === 'exchanging' ||
+            playerTurnPhase === 'locking')
+        ) {
           player.lockedCard = player.hand[selectedCardIndex];
           newGameState.message = currentTexts.messages.cardLocked;
           setSelectedCardIndex(undefined);
@@ -158,17 +178,23 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
 
   // ディーラーの自動行動
   useEffect(() => {
-    if (gameState.currentTurn === 'dealer' && gameState.gamePhase === 'playing') {
+    if (
+      gameState.currentTurn === 'dealer' &&
+      gameState.gamePhase === 'playing'
+    ) {
       const dealer = { ...gameState.dealer };
-      
+
       // ディーラーの戦略を決定
       setTimeout(() => {
         const newGameState = { ...gameState };
-        const strategy = getDealerStrategy(dealer.hand, newGameState.player.hand);
-        
+        const strategy = getDealerStrategy(
+          dealer.hand,
+          newGameState.player.hand
+        );
+
         // ディーラーは複数の行動を一度に実行
         let actionTaken = false;
-        
+
         // 1. カードを引く（必要に応じて）
         if (strategy.shouldDraw && dealer.hand.length < 5) {
           const { card, newDeck } = drawCard(newGameState.deck);
@@ -176,9 +202,13 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
           newGameState.deck = newDeck;
           actionTaken = true;
         }
-        
+
         // 2. カードを交換する（必要に応じて）
-        if (strategy.shouldExchange && newGameState.deck.length > 0 && !actionTaken) {
+        if (
+          strategy.shouldExchange &&
+          newGameState.deck.length > 0 &&
+          !actionTaken
+        ) {
           const exchangeIndex = strategy.exchangeCardIndex ?? 0;
           const { card: newCard, newDeck } = drawCard(newGameState.deck);
           const oldCard = dealer.hand[exchangeIndex];
@@ -186,41 +216,47 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
           newGameState.deck = [oldCard, ...newDeck];
           actionTaken = true;
         }
-        
+
         // 3. カードをロックする（必要に応じて）
         if (strategy.shouldLock && !dealer.lockedCard && !actionTaken) {
           const lockIndex = strategy.lockCardIndex ?? 0;
           dealer.lockedCard = dealer.hand[lockIndex];
           actionTaken = true;
         }
-        
+
         // 4. スタンドする
         if (strategy.shouldStand) {
           dealer.hasStood = true;
         }
-        
+
         newGameState.dealer = dealer;
         newGameState.message = currentTexts.messages.dealerTurnComplete;
-        
+
         // ディーラーの行動が終わったら、Sabacc Shiftと勝敗判定に移行
         newGameState.gamePhase = 'sabaccShift';
         newGameState.message = currentTexts.messages.sabaccShiftPending;
-        
+
         setTimeout(() => {
           const finalGameState = { ...newGameState };
-          
+
           // 25%の確率でSabacc Shift
           if (Math.random() < 0.25) {
             // 干渉フィールドに置かれたカード以外を変更
-            finalGameState.player.hand = performSabaccShift(finalGameState.player.hand, finalGameState.player.lockedCard);
-            finalGameState.dealer.hand = performSabaccShift(finalGameState.dealer.hand, finalGameState.dealer.lockedCard);
+            finalGameState.player.hand = performSabaccShift(
+              finalGameState.player.hand,
+              finalGameState.player.lockedCard
+            );
+            finalGameState.dealer.hand = performSabaccShift(
+              finalGameState.dealer.hand,
+              finalGameState.dealer.lockedCard
+            );
             finalGameState.message = currentTexts.messages.sabaccShiftOccurred;
           }
-          
+
           // 勝敗判定
           const playerTotal = calculateHandTotal(finalGameState.player.hand);
           const dealerTotal = calculateHandTotal(finalGameState.dealer.hand);
-          
+
           // 特別な勝利条件をチェック
           if (checkIdiotsArray(finalGameState.player.hand)) {
             finalGameState.winner = 'player';
@@ -246,22 +282,30 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
               return; // ここで処理を終了
             }
           }
-          
+
           finalGameState.gamePhase = 'finished';
           setGameState(finalGameState);
         }, 2000);
-        
+
         setGameState(newGameState);
       }, 1000);
     }
-  }, [gameState.currentTurn, gameState.gamePhase, gameState, currentTexts.messages]);
+  }, [
+    gameState.currentTurn,
+    gameState.gamePhase,
+    gameState,
+    currentTexts.messages,
+  ]);
 
   const handleCoinTossComplete = (winner: 'player' | 'dealer') => {
     setShowCoinToss(false);
     const finalGameState = { ...gameState };
     finalGameState.winner = winner;
     finalGameState.gamePhase = 'finished';
-    finalGameState.message = winner === 'player' ? currentTexts.messages.playerVictory : currentTexts.messages.dealerVictory;
+    finalGameState.message =
+      winner === 'player'
+        ? currentTexts.messages.playerVictory
+        : currentTexts.messages.dealerVictory;
     setGameState(finalGameState);
   };
 
@@ -274,26 +318,32 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
     setPlayerTurnPhase('drawing');
   };
 
-  const canDraw = gameState.currentTurn === 'player' && 
-                  gameState.gamePhase === 'playing' && 
-                  gameState.player.hand.length < 5 &&
-                  playerTurnPhase === 'drawing';
+  const canDraw =
+    gameState.currentTurn === 'player' &&
+    gameState.gamePhase === 'playing' &&
+    gameState.player.hand.length < 5 &&
+    playerTurnPhase === 'drawing';
 
-  const canExchange = gameState.currentTurn === 'player' && 
-                     gameState.gamePhase === 'playing' && 
-                     gameState.deck.length > 0 && 
-                     selectedCardIndex !== undefined &&
-                     (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
+  const canExchange =
+    gameState.currentTurn === 'player' &&
+    gameState.gamePhase === 'playing' &&
+    gameState.deck.length > 0 &&
+    selectedCardIndex !== undefined &&
+    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
 
-  const canStand = gameState.currentTurn === 'player' && 
-                   gameState.gamePhase === 'playing' &&
-                   (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
+  const canStand =
+    gameState.currentTurn === 'player' &&
+    gameState.gamePhase === 'playing' &&
+    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
 
-  const canLock = gameState.currentTurn === 'player' && 
-                  gameState.gamePhase === 'playing' && 
-                  selectedCardIndex !== undefined && 
-                  !gameState.player.lockedCard &&
-                  (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking');
+  const canLock =
+    gameState.currentTurn === 'player' &&
+    gameState.gamePhase === 'playing' &&
+    selectedCardIndex !== undefined &&
+    !gameState.player.lockedCard &&
+    (playerTurnPhase === 'drawing' ||
+      playerTurnPhase === 'exchanging' ||
+      playerTurnPhase === 'locking');
 
   return (
     <div className="sabacc-game">
@@ -318,16 +368,18 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
           isCurrentTurn={gameState.currentTurn === 'dealer'}
           language={language}
         />
-        
+
         <div className="game-center">
-          <div className={`game-message ${gameState.gamePhase === 'finished' ? 'game-message-finished' : ''} ${gameState.gamePhase === 'sabaccShift' ? 'game-message-shift' : ''}`}>
+          <div
+            className={`game-message ${gameState.gamePhase === 'finished' ? 'game-message-finished' : ''} ${gameState.gamePhase === 'sabaccShift' ? 'game-message-shift' : ''}`}
+          >
             {gameState.message}
           </div>
           <div className="deck-info">
             {currentTexts.deckInfo} {gameState.deck.length}
           </div>
         </div>
-        
+
         <PlayerHand
           player={gameState.player}
           isCurrentTurn={gameState.currentTurn === 'player'}
@@ -337,18 +389,19 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         />
       </div>
 
-      {gameState.currentTurn === 'player' && gameState.gamePhase === 'playing' && (
-        <ActionButtons
-          onAction={handlePlayerAction}
-          canDraw={canDraw}
-          canExchange={canExchange}
-          canStand={canStand}
-          canLock={canLock}
-          selectedCardIndex={selectedCardIndex}
-          language={language}
-        />
-      )}
-      
+      {gameState.currentTurn === 'player' &&
+        gameState.gamePhase === 'playing' && (
+          <ActionButtons
+            onAction={handlePlayerAction}
+            canDraw={canDraw}
+            canExchange={canExchange}
+            canStand={canStand}
+            canLock={canLock}
+            selectedCardIndex={selectedCardIndex}
+            language={language}
+          />
+        )}
+
       {gameState.gamePhase === 'finished' && (
         <ActionButtons
           showResetButton={true}
@@ -357,7 +410,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         />
       )}
 
-      <CoinToss 
+      <CoinToss
         isVisible={showCoinToss}
         onComplete={handleCoinTossComplete}
         language={language}
@@ -366,4 +419,4 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
   );
 };
 
-export default SabaccGame; 
+export default SabaccGame;

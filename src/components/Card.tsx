@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { Card as CardType } from '../types/sabacc';
 import './Card.css';
 
@@ -11,32 +11,42 @@ interface CardProps {
   isSelected?: boolean;
 }
 
-const CardComponent: React.FC<CardProps> = ({ 
-  card, 
-  isFaceDown = false, 
-  isLocked = false, 
-  onClick, 
+const CardComponent: React.FC<CardProps> = ({
+  card,
+  isFaceDown = false,
+  isLocked = false,
+  onClick,
   isSelectable = false,
-  isSelected = false 
+  isSelected = false,
 }) => {
   const getSuitSymbol = (suit: string | null) => {
     switch (suit) {
-      case 'Flasks': return '🧪';
-      case 'Sabers': return '⚔️';
-      case 'Staves': return '🦯';
-      case 'Coins': return '🪙';
-      default: return '⭐';
+      case 'Flasks':
+        return '🧪';
+      case 'Sabers':
+        return '⚔️';
+      case 'Staves':
+        return '🦯';
+      case 'Coins':
+        return '🪙';
+      default:
+        return '⭐';
     }
   };
 
   const getCardColor = (suit: string | null) => {
     if (suit === null) return 'purple';
     switch (suit) {
-      case 'Flasks': return 'blue';
-      case 'Sabers': return 'red';
-      case 'Staves': return 'green';
-      case 'Coins': return 'gold';
-      default: return 'purple';
+      case 'Flasks':
+        return 'blue';
+      case 'Sabers':
+        return 'red';
+      case 'Staves':
+        return 'green';
+      case 'Coins':
+        return 'gold';
+      default:
+        return 'purple';
     }
   };
 
@@ -55,7 +65,7 @@ const CardComponent: React.FC<CardProps> = ({
   }
 
   return (
-    <div 
+    <div
       className={`card ${isLocked ? 'card-locked' : ''} ${isSelectable ? 'card-selectable' : ''} ${isSelected ? 'card-selected' : ''}`}
       onClick={handleClick}
       style={{ borderColor: getCardColor(card.suit) }}
@@ -70,4 +80,4 @@ const CardComponent: React.FC<CardProps> = ({
   );
 };
 
-export default CardComponent; 
+export default CardComponent;

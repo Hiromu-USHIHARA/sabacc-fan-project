@@ -51,27 +51,45 @@
 }
 
 .coin.result-player {
-  animation: coinFlip 0.2s linear 5, coinResultPlayer 0.5s ease-in-out 1s forwards;
+  animation:
+    coinFlip 0.2s linear 5,
+    coinResultPlayer 0.5s ease-in-out 1s forwards;
 }
 
 .coin.result-dealer {
-  animation: coinFlip 0.2s linear 5, coinResultDealer 0.5s ease-in-out 1s forwards;
+  animation:
+    coinFlip 0.2s linear 5,
+    coinResultDealer 0.5s ease-in-out 1s forwards;
 }
 
 @keyframes coinFlip {
-  0% { transform: rotateY(0deg); }
-  50% { transform: rotateY(180deg); }
-  100% { transform: rotateY(360deg); }
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
 }
 
 @keyframes coinResultPlayer {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(0deg); }
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
 }
 
 @keyframes coinResultDealer {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(180deg); }
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
 }
 
 .coin-front,
@@ -131,8 +149,13 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .coin-result {
@@ -174,21 +197,21 @@
   .coin-toss-container {
     padding: 20px;
   }
-  
+
   .coin-toss-title {
     font-size: 1.2em;
   }
-  
+
   .coin {
     width: 100px;
     height: 100px;
   }
-  
+
   .coin-text {
     font-size: 0.8em;
   }
-  
+
   .coin-icon {
     font-size: 1.5em;
   }
-} 
+}

@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   color: white;
 }
 
@@ -62,8 +62,14 @@
 }
 
 @keyframes titleGlow {
-  from { text-shadow: 0 0 20px rgba(243, 156, 18, 0.5); }
-  to { text-shadow: 0 0 30px rgba(243, 156, 18, 0.8), 0 0 40px rgba(231, 76, 60, 0.5); }
+  from {
+    text-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+  }
+  to {
+    text-shadow:
+      0 0 30px rgba(243, 156, 18, 0.8),
+      0 0 40px rgba(231, 76, 60, 0.5);
+  }
 }
 
 .game-subtitle {
@@ -107,7 +113,8 @@
   flex-wrap: wrap;
 }
 
-.start-btn, .rules-btn {
+.start-btn,
+.rules-btn {
   padding: 15px 30px;
   border: none;
   border-radius: 10px;
@@ -172,36 +179,37 @@
   .top-content {
     padding: 20px;
   }
-  
+
   .header-section {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .game-title {
     font-size: 2.5em;
   }
-  
+
   .language-toggle {
     font-size: 0.8em;
     padding: 6px 12px;
   }
-  
+
   .game-subtitle {
     font-size: 1.2em;
   }
-  
+
   .action-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
-  .start-btn, .rules-btn {
+
+  .start-btn,
+  .rules-btn {
     width: 100%;
     max-width: 250px;
   }
-  
+
   .game-features {
     grid-template-columns: 1fr;
   }
-} 
+}

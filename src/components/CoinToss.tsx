@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import './CoinToss.css';
 
 type Language = 'ja' | 'en';
@@ -9,7 +10,11 @@ interface CoinTossProps {
   language?: Language;
 }
 
-const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = 'ja' }) => {
+const CoinToss: React.FC<CoinTossProps> = ({
+  isVisible,
+  onComplete,
+  language = 'ja',
+}) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [result, setResult] = useState<'player' | 'dealer' | null>(null);
 
@@ -20,7 +25,7 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
       dealer: 'ディーラー',
       status: 'コインを投げています...',
       playerVictory: 'プレイヤーの勝利！',
-      dealerVictory: 'ディーラーの勝利！'
+      dealerVictory: 'ディーラーの勝利！',
     },
     en: {
       title: 'Tie! Coin toss to determine winner',
@@ -28,8 +33,8 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
       dealer: 'Dealer',
       status: 'Flipping coin...',
       playerVictory: 'Player wins!',
-      dealerVictory: 'Dealer wins!'
-    }
+      dealerVictory: 'Dealer wins!',
+    },
   };
 
   const currentTexts = texts[language];
@@ -44,7 +49,7 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
         // アニメーション終了、結果決定
         const winner = Math.random() < 0.5 ? 'player' : 'dealer';
         setResult(winner);
-        
+
         setTimeout(() => {
           // 結果表示後、コールバック実行
           onComplete(winner);
@@ -59,9 +64,11 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
     <div className="coin-toss-overlay">
       <div className="coin-toss-container">
         <div className="coin-toss-title">{currentTexts.title}</div>
-        
+
         <div className="coin-container">
-          <div className={`coin ${isAnimating ? 'flipping' : ''} ${result ? 'result-' + result : ''}`}>
+          <div
+            className={`coin ${isAnimating ? 'flipping' : ''} ${result ? 'result-' + result : ''}`}
+          >
             <div className="coin-front">
               <div className="coin-side player-side">
                 <span className="coin-text">{currentTexts.player}</span>
@@ -76,23 +83,21 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
             </div>
           </div>
         </div>
-        
+
         {result && (
           <div className="coin-result">
             <div className={`result-message ${result}`}>
-              {result === 'player' ? currentTexts.playerVictory : currentTexts.dealerVictory}
+              {result === 'player'
+                ? currentTexts.playerVictory
+                : currentTexts.dealerVictory}
             </div>
           </div>
         )}
-        
-        {!result && (
-          <div className="coin-status">
-            {currentTexts.status}
-          </div>
-        )}
+
+        {!result && <div className="coin-status">{currentTexts.status}</div>}
       </div>
     </div>
   );
 };
 
-export default CoinToss; 
+export default CoinToss;

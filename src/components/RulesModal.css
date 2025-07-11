@@ -81,7 +81,8 @@
   color: #bdc3c7;
 }
 
-.rule-section ul, .rule-section ol {
+.rule-section ul,
+.rule-section ol {
   margin: 10px 0;
   padding-left: 20px;
 }
@@ -123,16 +124,16 @@
     padding: 20px;
     margin: 10px;
   }
-  
+
   .modal-title {
     font-size: 1.5em;
   }
-  
+
   .rule-section {
     padding: 15px;
   }
-  
+
   .rule-section h3 {
     font-size: 1.1em;
   }
-} 
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { PlayerAction } from '../types/sabacc';
 import './ActionButtons.css';
 
@@ -25,7 +25,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   selectedCardIndex,
   showResetButton = false,
   onReset,
-  language = 'ja'
+  language = 'ja',
 }) => {
   const texts = {
     ja: {
@@ -33,15 +33,15 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       exchange: '🔄 交換',
       stand: '✋ スタンド',
       lock: '🔒 ロック',
-      newGame: '🎮 新しいゲーム'
+      newGame: '🎮 新しいゲーム',
     },
     en: {
       draw: '🃏 Draw',
       exchange: '🔄 Exchange',
       stand: '✋ Stand',
       lock: '🔒 Lock',
-      newGame: '🎮 New Game'
-    }
+      newGame: '🎮 New Game',
+    },
   };
 
   const currentTexts = texts[language];
@@ -51,30 +51,34 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       {!showResetButton ? (
         <>
           <button
+            type="button"
             className="action-btn draw-btn"
             onClick={() => onAction?.('draw')}
             disabled={!canDraw}
           >
             {currentTexts.draw}
           </button>
-          
+
           <button
+            type="button"
             className="action-btn exchange-btn"
             onClick={() => onAction?.('exchange')}
             disabled={!canExchange || selectedCardIndex === undefined}
           >
             {currentTexts.exchange}
           </button>
-          
+
           <button
+            type="button"
             className="action-btn stand-btn"
             onClick={() => onAction?.('stand')}
             disabled={!canStand}
           >
             {currentTexts.stand}
           </button>
-          
+
           <button
+            type="button"
             className="action-btn lock-btn"
             onClick={() => onAction?.('lock')}
             disabled={!canLock || selectedCardIndex === undefined}
@@ -83,10 +87,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           </button>
         </>
       ) : (
-        <button
-          className="action-btn reset-btn"
-          onClick={onReset}
-        >
+        <button type="button" className="action-btn reset-btn" onClick={onReset}>
           {currentTexts.newGame}
         </button>
       )}
@@ -94,4 +95,4 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   );
 };
 
-export default ActionButtons; 
+export default ActionButtons;
