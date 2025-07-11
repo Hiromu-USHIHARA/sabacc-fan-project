@@ -1,14 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import './CoinToss.css';
 
+type Language = 'ja' | 'en';
+
 interface CoinTossProps {
   isVisible: boolean;
   onComplete: (winner: 'player' | 'dealer') => void;
+  language?: Language;
 }
 
-const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
+const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = 'ja' }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [result, setResult] = useState<'player' | 'dealer' | null>(null);
+
+  const texts = {
+    ja: {
+      title: '引き分け！コイントスで勝者を決定',
+      player: 'プレイヤー',
+      dealer: 'ディーラー',
+      status: 'コインを投げています...',
+      playerVictory: 'プレイヤーの勝利！',
+      dealerVictory: 'ディーラーの勝利！'
+    },
+    en: {
+      title: 'Tie! Coin toss to determine winner',
+      player: 'Player',
+      dealer: 'Dealer',
+      status: 'Flipping coin...',
+      playerVictory: 'Player victory!',
+      dealerVictory: 'Dealer victory!'
+    }
+  };
+
+  const currentTexts = texts[language];
 
   useEffect(() => {
     if (isVisible && !isAnimating) {
@@ -34,19 +58,19 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
   return (
     <div className="coin-toss-overlay">
       <div className="coin-toss-container">
-        <div className="coin-toss-title">引き分け！コイントスで勝者を決定</div>
+        <div className="coin-toss-title">{currentTexts.title}</div>
         
         <div className="coin-container">
           <div className={`coin ${isAnimating ? 'flipping' : ''} ${result ? 'result-' + result : ''}`}>
             <div className="coin-front">
               <div className="coin-side player-side">
-                <span className="coin-text">プレイヤー</span>
+                <span className="coin-text">{currentTexts.player}</span>
                 <span className="coin-icon">👤</span>
               </div>
             </div>
             <div className="coin-back">
               <div className="coin-side dealer-side">
-                <span className="coin-text">ディーラー</span>
+                <span className="coin-text">{currentTexts.dealer}</span>
                 <span className="coin-icon">🤖</span>
               </div>
             </div>
@@ -56,14 +80,14 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete }) => {
         {result && (
           <div className="coin-result">
             <div className={`result-message ${result}`}>
-              {result === 'player' ? 'プレイヤーの勝利！' : 'ディーラーの勝利！'}
+              {result === 'player' ? currentTexts.playerVictory : currentTexts.dealerVictory}
             </div>
           </div>
         )}
         
         {!result && (
           <div className="coin-status">
-            コインを投げています...
+            {currentTexts.status}
           </div>
         )}
       </div>

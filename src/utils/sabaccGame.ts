@@ -474,6 +474,6 @@ export function initializeGame(): GameState {
     currentTurn: 'player',
     gamePhase: 'playing',
     winner: null,
-    message: 'ゲーム開始！あなたのターンです。'
+    message: '' // メッセージはSabaccGameコンポーネントで設定
   };
 } 

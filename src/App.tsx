@@ -42,7 +42,11 @@ function App() {
         </>
       ) : (
         <>
-          <SabaccGame onBackToTop={handleBackToTop} onShowRules={handleShowRules} />
+          <SabaccGame 
+            onBackToTop={handleBackToTop} 
+            onShowRules={handleShowRules}
+            language={language}
+          />
           <Footer language={language} />
         </>
       )}
