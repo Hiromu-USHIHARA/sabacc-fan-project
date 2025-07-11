@@ -238,17 +238,12 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           </button>
           <div className="title-section">
             <h1>Sabacc Fan</h1>
-            {/* <p className="fan-made-subtitle">Fan-Made Game</p> */}
+            <p className="fan-made-subtitle">Fan-Made Game</p>
           </div>
           <button className="rules-btn" onClick={onShowRules}>
             📖 ルール
           </button>
         </div>
-        {gameState.gamePhase === 'finished' && (
-          <button className="reset-btn" onClick={resetGame}>
-            新しいゲーム
-          </button>
-        )}
       </div>
 
       <div className="game-board">
@@ -285,6 +280,13 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         />
       )}
       
+      {gameState.gamePhase === 'finished' && (
+        <ActionButtons
+          showResetButton={true}
+          onReset={resetGame}
+        />
+      )}
+
       <CoinToss 
         isVisible={showCoinToss}
         onComplete={handleCoinTossComplete}
