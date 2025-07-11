@@ -13,6 +13,7 @@ import {
 } from '../utils/sabaccGame';
 import PlayerHand from './PlayerHand';
 import ActionButtons from './ActionButtons';
+import CoinToss from './CoinToss';
 import './SabaccGame.css';
 
 interface SabaccGameProps {
@@ -23,6 +24,7 @@ interface SabaccGameProps {
 const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => {
   const [gameState, setGameState] = useState<GameState>(initializeGame());
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | undefined>();
+  const [showCoinToss, setShowCoinToss] = useState(false);
 
   const handlePlayerAction = (action: PlayerAction) => {
     if (gameState.currentTurn !== 'player' || gameState.gamePhase !== 'playing') {
@@ -161,16 +163,18 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
               } else if (checkPureSabacc(dealerTotal)) {
                 finalGameState.winner = 'dealer';
                 finalGameState.message = 'Pure Sabacc！ディーラーの勝利！';
+                          } else {
+              finalGameState.winner = determineWinner(playerTotal, dealerTotal);
+              if (finalGameState.winner === 'player') {
+                finalGameState.message = 'プレイヤーの勝利！';
+              } else if (finalGameState.winner === 'dealer') {
+                finalGameState.message = 'ディーラーの勝利！';
               } else {
-                finalGameState.winner = determineWinner(playerTotal, dealerTotal);
-                if (finalGameState.winner === 'player') {
-                  finalGameState.message = 'プレイヤーの勝利！';
-                } else if (finalGameState.winner === 'dealer') {
-                  finalGameState.message = 'ディーラーの勝利！';
-                } else {
-                  finalGameState.message = '引き分け！';
-                }
+                // 引き分けの場合はコイントスを表示
+                setShowCoinToss(true);
+                return; // ここで処理を終了
               }
+            }
               
               finalGameState.gamePhase = 'finished';
               setGameState(finalGameState);
@@ -189,9 +193,19 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
     }
   }, [gameState.currentTurn, gameState.gamePhase]);
 
+  const handleCoinTossComplete = (winner: 'player' | 'dealer') => {
+    setShowCoinToss(false);
+    const finalGameState = { ...gameState };
+    finalGameState.winner = winner;
+    finalGameState.gamePhase = 'finished';
+    finalGameState.message = winner === 'player' ? 'プレイヤーの勝利！' : 'ディーラーの勝利！';
+    setGameState(finalGameState);
+  };
+
   const resetGame = () => {
     setGameState(initializeGame());
     setSelectedCardIndex(undefined);
+    setShowCoinToss(false);
   };
 
   const canDraw = gameState.currentTurn === 'player' && 
@@ -263,6 +277,11 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           selectedCardIndex={selectedCardIndex}
         />
       )}
+      
+      <CoinToss 
+        isVisible={showCoinToss}
+        onComplete={handleCoinTossComplete}
+      />
     </div>
   );
 };

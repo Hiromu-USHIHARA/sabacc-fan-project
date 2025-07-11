@@ -1,0 +1,194 @@
+.coin-toss-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.coin-toss-container {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  border: 2px solid #f39c12;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  width: 90%;
+}
+
+.coin-toss-title {
+  font-size: 1.5em;
+  color: #f39c12;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.coin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  perspective: 1000px;
+}
+
+.coin {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+}
+
+.coin.flipping {
+  animation: coinFlip 0.2s linear infinite;
+}
+
+.coin.result-player {
+  animation: coinFlip 0.2s linear 5, coinResultPlayer 0.5s ease-in-out 1s forwards;
+}
+
+.coin.result-dealer {
+  animation: coinFlip 0.2s linear 5, coinResultDealer 0.5s ease-in-out 1s forwards;
+}
+
+@keyframes coinFlip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+@keyframes coinResultPlayer {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+@keyframes coinResultDealer {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+.coin-front,
+.coin-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  border: 3px solid #f39c12;
+}
+
+.coin-front {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  transform: rotateY(0deg);
+}
+
+.coin-back {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  transform: rotateY(180deg);
+}
+
+.coin-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.coin-text {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.coin-icon {
+  font-size: 2em;
+}
+
+.player-side {
+  color: #ecf0f1;
+}
+
+.dealer-side {
+  color: #ecf0f1;
+}
+
+.coin-status {
+  font-size: 1.2em;
+  color: #ecf0f1;
+  margin-top: 20px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.coin-result {
+  margin-top: 30px;
+}
+
+.result-message {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 15px 25px;
+  border-radius: 10px;
+  animation: resultAppear 0.5s ease-in-out;
+}
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.result-message.player {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+  border: 2px solid #27ae60;
+}
+
+.result-message.dealer {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: 2px solid #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .coin-toss-container {
+    padding: 20px;
+  }
+  
+  .coin-toss-title {
+    font-size: 1.2em;
+  }
+  
+  .coin {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .coin-text {
+    font-size: 0.8em;
+  }
+  
+  .coin-icon {
+    font-size: 1.5em;
+  }
+} 
