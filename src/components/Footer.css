@@ -38,6 +38,17 @@
   margin: 3px 0;
 }
 
+.footer-link {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .footer-content {
     padding: 0 15px;

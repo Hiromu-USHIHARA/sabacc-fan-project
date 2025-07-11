@@ -238,7 +238,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           </button>
           <div className="title-section">
             <h1>Sabacc Fan</h1>
-            <p className="fan-made-subtitle">Fan-Made Game</p>
+            {/* <p className="fan-made-subtitle">Fan-Made Game</p> */}
           </div>
           <button className="rules-btn" onClick={onShowRules}>
             📖 ルール
