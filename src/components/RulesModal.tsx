@@ -176,18 +176,15 @@ const RulesModal: React.FC<RulesModalProps> = ({
   const currentTexts = texts[language];
 
   return (
-    <div 
-      className="modal-overlay" 
+    <button
+      type="button"
+      className="modal-overlay"
       onClick={onClose}
       onKeyDown={(e) => (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') && onClose()}
-      role="button"
-      tabIndex={0}
       aria-label="Close rules modal"
     >
       <div 
         className="modal-content" 
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
       >
         <button type="button" className="modal-close" onClick={onClose}>
           {currentTexts.close}
@@ -279,7 +276,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
           </section>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
