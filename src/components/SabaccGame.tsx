@@ -15,7 +15,11 @@ import PlayerHand from './PlayerHand';
 import ActionButtons from './ActionButtons';
 import './SabaccGame.css';
 
-const SabaccGame: React.FC = () => {
+interface SabaccGameProps {
+  onBackToTop: () => void;
+}
+
+const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop }) => {
   const [gameState, setGameState] = useState<GameState>(initializeGame());
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | undefined>();
 
@@ -201,7 +205,12 @@ const SabaccGame: React.FC = () => {
   return (
     <div className="sabacc-game">
       <div className="game-header">
-        <h1>Sabacc</h1>
+        <div className="header-top">
+          <button className="back-btn" onClick={onBackToTop}>
+            ← トップページに戻る
+          </button>
+          <h1>Sabacc</h1>
+        </div>
         <div className="game-message">{gameState.message}</div>
         {gameState.gamePhase === 'finished' && (
           <button className="reset-btn" onClick={resetGame}>

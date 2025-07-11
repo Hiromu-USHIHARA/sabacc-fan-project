@@ -3,6 +3,8 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
   color: white;
+  display: flex;
+  flex-direction: column;
 }
 
 * {

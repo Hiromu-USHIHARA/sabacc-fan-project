@@ -1,0 +1,138 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  font-size: 2em;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
+}
+
+.modal-title {
+  color: #f39c12;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
+  border-bottom: 2px solid #f39c12;
+  padding-bottom: 10px;
+}
+
+.rules-content {
+  color: #ecf0f1;
+  line-height: 1.6;
+}
+
+.rule-section {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border-left: 4px solid #f39c12;
+}
+
+.rule-section h3 {
+  color: #f39c12;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.rule-section p {
+  margin: 10px 0;
+  color: #bdc3c7;
+}
+
+.rule-section ul, .rule-section ol {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.rule-section li {
+  margin: 8px 0;
+  color: #bdc3c7;
+}
+
+.rule-section ul ul {
+  margin: 5px 0;
+}
+
+.rule-section strong {
+  color: #f39c12;
+}
+
+/* スクロールバーのスタイル */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #f39c12;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #e67e22;
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .modal-title {
+    font-size: 1.5em;
+  }
+  
+  .rule-section {
+    padding: 15px;
+  }
+  
+  .rule-section h3 {
+    font-size: 1.1em;
+  }
+} 
