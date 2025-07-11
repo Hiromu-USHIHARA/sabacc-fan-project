@@ -149,12 +149,17 @@ export function determineWinner(playerTotal: number, dealerTotal: number): 'play
 export function getDealerAction(hand: Card[]): PlayerAction {
   const total = calculateHandTotal(hand);
   
+  // 手札が5枚の場合はスタンド
+  if (hand.length >= 5) {
+    return 'stand';
+  }
+  
   if (total < 15) {
     return 'draw';
   } else if (total >= 15 && total <= 20) {
     return Math.random() < 0.5 ? 'exchange' : 'lock';
   } else {
-    return Math.random() < 0.7 ? 'stand' : 'lock';
+    return Math.random() < 0.8 ? 'stand' : 'lock';
   }
 }
 

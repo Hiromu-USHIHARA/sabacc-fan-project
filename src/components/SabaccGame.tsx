@@ -127,53 +127,61 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
 
         newGameState.dealer = dealer;
         
-        // 両者がスタンドしたらSabacc Shiftをチェック
-        if (dealer.hasStood && newGameState.player.hasStood) {
-          newGameState.gamePhase = 'sabaccShift';
-          newGameState.message = 'Sabacc Shiftが発生する可能性があります...';
-          
-          setTimeout(() => {
-            const finalGameState = { ...newGameState };
+        // ディーラーがスタンドした場合、またはディーラーの手札が5枚になった場合
+        if (dealer.hasStood || dealer.hand.length >= 5) {
+          // 両者がスタンドしたらSabacc Shiftをチェック
+          if (dealer.hasStood && newGameState.player.hasStood) {
+            newGameState.gamePhase = 'sabaccShift';
+            newGameState.message = 'Sabacc Shiftが発生する可能性があります...';
             
-            // 25%の確率でSabacc Shift
-            if (Math.random() < 0.25) {
-              finalGameState.player.hand = performSabaccShift(finalGameState.player.hand);
-              finalGameState.dealer.hand = performSabaccShift(finalGameState.dealer.hand);
-              finalGameState.message = 'Sabacc Shiftが発生しました！';
-            }
-            
-            // 勝敗判定
-            const playerTotal = calculateHandTotal(finalGameState.player.hand);
-            const dealerTotal = calculateHandTotal(finalGameState.dealer.hand);
-            
-            // 特別な勝利条件をチェック
-            if (checkIdiotsArray(finalGameState.player.hand)) {
-              finalGameState.winner = 'player';
-              finalGameState.message = 'Idiot\'s Array！プレイヤーの勝利！';
-            } else if (checkIdiotsArray(finalGameState.dealer.hand)) {
-              finalGameState.winner = 'dealer';
-              finalGameState.message = 'Idiot\'s Array！ディーラーの勝利！';
-            } else if (checkPureSabacc(playerTotal)) {
-              finalGameState.winner = 'player';
-              finalGameState.message = 'Pure Sabacc！プレイヤーの勝利！';
-            } else if (checkPureSabacc(dealerTotal)) {
-              finalGameState.winner = 'dealer';
-              finalGameState.message = 'Pure Sabacc！ディーラーの勝利！';
-            } else {
-              finalGameState.winner = determineWinner(playerTotal, dealerTotal);
-              if (finalGameState.winner === 'player') {
-                finalGameState.message = 'プレイヤーの勝利！';
-              } else if (finalGameState.winner === 'dealer') {
-                finalGameState.message = 'ディーラーの勝利！';
-              } else {
-                finalGameState.message = '引き分け！';
+            setTimeout(() => {
+              const finalGameState = { ...newGameState };
+              
+              // 25%の確率でSabacc Shift
+              if (Math.random() < 0.25) {
+                finalGameState.player.hand = performSabaccShift(finalGameState.player.hand);
+                finalGameState.dealer.hand = performSabaccShift(finalGameState.dealer.hand);
+                finalGameState.message = 'Sabacc Shiftが発生しました！';
               }
-            }
-            
-            finalGameState.gamePhase = 'finished';
-            setGameState(finalGameState);
-          }, 2000);
+              
+              // 勝敗判定
+              const playerTotal = calculateHandTotal(finalGameState.player.hand);
+              const dealerTotal = calculateHandTotal(finalGameState.dealer.hand);
+              
+              // 特別な勝利条件をチェック
+              if (checkIdiotsArray(finalGameState.player.hand)) {
+                finalGameState.winner = 'player';
+                finalGameState.message = 'Idiot\'s Array！プレイヤーの勝利！';
+              } else if (checkIdiotsArray(finalGameState.dealer.hand)) {
+                finalGameState.winner = 'dealer';
+                finalGameState.message = 'Idiot\'s Array！ディーラーの勝利！';
+              } else if (checkPureSabacc(playerTotal)) {
+                finalGameState.winner = 'player';
+                finalGameState.message = 'Pure Sabacc！プレイヤーの勝利！';
+              } else if (checkPureSabacc(dealerTotal)) {
+                finalGameState.winner = 'dealer';
+                finalGameState.message = 'Pure Sabacc！ディーラーの勝利！';
+              } else {
+                finalGameState.winner = determineWinner(playerTotal, dealerTotal);
+                if (finalGameState.winner === 'player') {
+                  finalGameState.message = 'プレイヤーの勝利！';
+                } else if (finalGameState.winner === 'dealer') {
+                  finalGameState.message = 'ディーラーの勝利！';
+                } else {
+                  finalGameState.message = '引き分け！';
+                }
+              }
+              
+              finalGameState.gamePhase = 'finished';
+              setGameState(finalGameState);
+            }, 2000);
+          } else {
+            // ディーラーがスタンドしたが、プレイヤーがまだスタンドしていない場合
+            newGameState.currentTurn = 'player';
+            setGameState(newGameState);
+          }
         } else {
+          // ディーラーがまだ行動できる場合、続行
           newGameState.currentTurn = 'player';
           setGameState(newGameState);
         }
