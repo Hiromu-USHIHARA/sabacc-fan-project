@@ -122,20 +122,29 @@ export function checkBombOut(total: number): boolean {
 
 // 勝敗を判定
 export function determineWinner(playerTotal: number, dealerTotal: number): 'player' | 'dealer' | 'tie' {
-  // Idiot's Arrayチェック
-  // Pure Sabaccチェック
   // 爆発チェック
-  // 通常の比較
-  
   if (checkBombOut(playerTotal)) return 'dealer';
   if (checkBombOut(dealerTotal)) return 'player';
   
-  if (checkPureSabacc(playerTotal)) return 'player';
-  if (checkPureSabacc(dealerTotal)) return 'dealer';
+  // Idiot's Arrayチェック
+  // 注意: Idiot's Arrayは最強なので、ここではチェックしない（SabaccGame.tsxでチェック）
   
-  // 引き分けの場合はランダム
-  if (playerTotal === dealerTotal) {
-    return Math.random() < 0.5 ? 'player' : 'dealer';
+  // Pure Sabaccチェック（同じ得点の場合は引き分け）
+  const playerPureSabacc = checkPureSabacc(playerTotal);
+  const dealerPureSabacc = checkPureSabacc(dealerTotal);
+  
+  if (playerPureSabacc && dealerPureSabacc) {
+    // 両方ともPure Sabaccの場合は引き分け
+    return 'tie';
+  } else if (playerPureSabacc) {
+    return 'player';
+  } else if (dealerPureSabacc) {
+    return 'dealer';
+  }
+  
+  // 通常の得点比較
+  if (playerTotal === dealerTotal || playerTotal === -dealerTotal) {
+    return 'tie';
   }
   
   // 23に近い方が勝ち
