@@ -154,13 +154,111 @@ export function getDealerAction(hand: Card[]): PlayerAction {
     return 'stand';
   }
   
-  if (total < 15) {
-    return 'draw';
-  } else if (total >= 15 && total <= 20) {
-    return Math.random() < 0.5 ? 'exchange' : 'lock';
-  } else {
-    return Math.random() < 0.8 ? 'stand' : 'lock';
+  // Idiot's Arrayの可能性をチェック
+  if (checkIdiotsArray(hand)) {
+    return 'stand';
   }
+  
+  // Pure Sabaccの場合はスタンド
+  if (checkPureSabacc(total)) {
+    return 'stand';
+  }
+  
+  // 爆発の可能性が高い場合はスタンド
+  if (total >= 20 || total <= -20) {
+    return 'stand';
+  }
+  
+  // 手札が4枚で、合計が15以上または-15以下の場合はスタンド
+  if (hand.length >= 4 && (total >= 15 || total <= -15)) {
+    return 'stand';
+  }
+  
+  // 手札が3枚で、合計が18以上または-18以下の場合はスタンド
+  if (hand.length >= 3 && (total >= 18 || total <= -18)) {
+    return 'stand';
+  }
+  
+  // 手札が2枚で、合計が20以上または-20以下の場合はスタンド
+  if (hand.length >= 2 && (total >= 20 || total <= -20)) {
+    return 'stand';
+  }
+  
+  // 低い合計値の場合はカードを引く
+  if (total < 10 && total > -10) {
+    return 'draw';
+  }
+  
+  // 中程度の合計値の場合は交換またはロック
+  if (total >= 10 && total < 15 || total <= -10 && total > -15) {
+    return Math.random() < 0.6 ? 'exchange' : 'lock';
+  }
+  
+  // それ以外の場合はランダムに行動を決定
+  const actions: PlayerAction[] = ['draw', 'exchange', 'lock', 'stand'];
+  const weights = [0.3, 0.3, 0.2, 0.2]; // 各行動の重み
+  
+  const random = Math.random();
+  let cumulativeWeight = 0;
+  
+  for (let i = 0; i < actions.length; i++) {
+    cumulativeWeight += weights[i];
+    if (random < cumulativeWeight) {
+      return actions[i];
+    }
+  }
+  
+  return 'stand'; // デフォルト
+}
+
+// ディーラーの戦略的な行動を決定
+export function getDealerStrategy(hand: Card[], deck: Card[]): {
+  shouldDraw: boolean;
+  shouldExchange: boolean;
+  shouldLock: boolean;
+  shouldStand: boolean;
+  exchangeCardIndex?: number;
+  lockCardIndex?: number;
+} {
+  const total = calculateHandTotal(hand);
+  
+  // 基本戦略
+  const action = getDealerAction(hand);
+  
+  // 交換するカードを選択
+  let exchangeCardIndex: number | undefined;
+  if (action === 'exchange' && hand.length > 0) {
+    // 最も価値の低いカードを交換対象とする
+    let minValue = Infinity;
+    for (let i = 0; i < hand.length; i++) {
+      if (hand[i].value < minValue) {
+        minValue = hand[i].value;
+        exchangeCardIndex = i;
+      }
+    }
+  }
+  
+  // ロックするカードを選択
+  let lockCardIndex: number | undefined;
+  if (action === 'lock' && hand.length > 0) {
+    // 最も価値の高いカードをロック対象とする
+    let maxValue = -Infinity;
+    for (let i = 0; i < hand.length; i++) {
+      if (hand[i].value > maxValue) {
+        maxValue = hand[i].value;
+        lockCardIndex = i;
+      }
+    }
+  }
+  
+  return {
+    shouldDraw: action === 'draw',
+    shouldExchange: action === 'exchange',
+    shouldLock: action === 'lock',
+    shouldStand: action === 'stand',
+    exchangeCardIndex,
+    lockCardIndex
+  };
 }
 
 // Sabacc Shiftを実行

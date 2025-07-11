@@ -5,6 +5,7 @@ import {
   drawCard, 
   calculateHandTotal, 
   getDealerAction, 
+  getDealerStrategy,
   performSabaccShift,
   determineWinner,
   checkIdiotsArray,
@@ -96,47 +97,43 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
     if (gameState.currentTurn === 'dealer' && gameState.gamePhase === 'playing') {
       const dealer = { ...gameState.dealer };
       
-      // ディーラーの行動を決定（複数の行動を一度に実行）
+      // ディーラーの戦略を決定
       setTimeout(() => {
         const newGameState = { ...gameState };
+        const strategy = getDealerStrategy(dealer.hand, newGameState.deck);
         
         // ディーラーは複数の行動を一度に実行
         let actionTaken = false;
         
         // 1. カードを引く（必要に応じて）
-        if (dealer.hand.length < 5) {
-          const action = getDealerAction(dealer.hand);
-          if (action === 'draw') {
-            const { card, newDeck } = drawCard(newGameState.deck);
-            dealer.hand.push(card);
-            newGameState.deck = newDeck;
-            actionTaken = true;
-          }
+        if (strategy.shouldDraw && dealer.hand.length < 5) {
+          const { card, newDeck } = drawCard(newGameState.deck);
+          dealer.hand.push(card);
+          newGameState.deck = newDeck;
+          actionTaken = true;
         }
         
         // 2. カードを交換する（必要に応じて）
-        if (newGameState.deck.length > 0 && !actionTaken) {
-          const action = getDealerAction(dealer.hand);
-          if (action === 'exchange') {
-            const { card: newCard, newDeck } = drawCard(newGameState.deck);
-            const oldCard = dealer.hand[0];
-            dealer.hand[0] = newCard;
-            newGameState.deck = [oldCard, ...newDeck];
-            actionTaken = true;
-          }
+        if (strategy.shouldExchange && newGameState.deck.length > 0 && !actionTaken) {
+          const exchangeIndex = strategy.exchangeCardIndex ?? 0;
+          const { card: newCard, newDeck } = drawCard(newGameState.deck);
+          const oldCard = dealer.hand[exchangeIndex];
+          dealer.hand[exchangeIndex] = newCard;
+          newGameState.deck = [oldCard, ...newDeck];
+          actionTaken = true;
         }
         
         // 3. カードをロックする（必要に応じて）
-        if (!dealer.lockedCard && !actionTaken) {
-          const action = getDealerAction(dealer.hand);
-          if (action === 'lock') {
-            dealer.lockedCard = dealer.hand[0];
-            actionTaken = true;
-          }
+        if (strategy.shouldLock && !dealer.lockedCard && !actionTaken) {
+          const lockIndex = strategy.lockCardIndex ?? 0;
+          dealer.lockedCard = dealer.hand[lockIndex];
+          actionTaken = true;
         }
         
         // 4. スタンドする
-        dealer.hasStood = true;
+        if (strategy.shouldStand) {
+          dealer.hasStood = true;
+        }
         
         newGameState.dealer = dealer;
         newGameState.message = 'ディーラーのターンが完了しました。';
