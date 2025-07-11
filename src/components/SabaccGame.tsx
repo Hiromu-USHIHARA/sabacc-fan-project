@@ -17,9 +17,10 @@ import './SabaccGame.css';
 
 interface SabaccGameProps {
   onBackToTop: () => void;
+  onShowRules: () => void;
 }
 
-const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop }) => {
+const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => {
   const [gameState, setGameState] = useState<GameState>(initializeGame());
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | undefined>();
 
@@ -210,6 +211,9 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop }) => {
             ← トップページに戻る
           </button>
           <h1>Sabacc</h1>
+          <button className="rules-btn" onClick={onShowRules}>
+            📖 ルール
+          </button>
         </div>
         <div className="game-message">{gameState.message}</div>
         {gameState.gamePhase === 'finished' && (

@@ -33,7 +33,7 @@ function App() {
         </>
       ) : (
         <>
-          <SabaccGame onBackToTop={handleBackToTop} />
+          <SabaccGame onBackToTop={handleBackToTop} onShowRules={handleShowRules} />
           <Footer />
         </>
       )}
