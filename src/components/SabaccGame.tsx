@@ -42,7 +42,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           const { card, newDeck } = drawCard(newGameState.deck);
           player.hand.push(card);
           newGameState.deck = newDeck;
-          newGameState.message = 'カードを引きました。';
+          newGameState.message = 'カードを引きました．';
           // 引き続き交換やスタンドが可能
         }
         break;
@@ -54,7 +54,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
           const oldCard = player.hand[selectedCardIndex];
           player.hand[selectedCardIndex] = newCard;
           newGameState.deck = [oldCard, ...newDeck];
-          newGameState.message = 'カードを交換しました。';
+          newGameState.message = 'カードを交換しました．';
           setSelectedCardIndex(undefined);
           setPlayerTurnPhase('exchanging');
         }
@@ -63,10 +63,10 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
       case 'stand':
         if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging') {
           player.hasStood = true;
-          newGameState.message = 'スタンドしました。';
+          newGameState.message = 'スタンドしました．';
           // スタンドしたら自動的にディーラーのターンに移行
           newGameState.currentTurn = 'dealer';
-          newGameState.message = 'スタンドしました。ディーラーのターンです。';
+          newGameState.message = 'スタンドしました．ディーラーのターンです．';
           setPlayerTurnPhase('drawing');
         }
         break;
@@ -75,7 +75,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         if (selectedCardIndex !== undefined && !player.lockedCard && 
             (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking')) {
           player.lockedCard = player.hand[selectedCardIndex];
-          newGameState.message = 'カードを干渉フィールドに配置しました。';
+          newGameState.message = 'カードを干渉フィールドに配置しました．';
           setSelectedCardIndex(undefined);
           setPlayerTurnPhase('locking');
         }
@@ -136,7 +136,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules }) => 
         }
         
         newGameState.dealer = dealer;
-        newGameState.message = 'ディーラーのターンが完了しました。';
+        newGameState.message = 'ディーラーのターンが完了しました．';
         
         // ディーラーの行動が終わったら、Sabacc Shiftと勝敗判定に移行
         newGameState.gamePhase = 'sabaccShift';

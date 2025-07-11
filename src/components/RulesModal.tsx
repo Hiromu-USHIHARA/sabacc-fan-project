@@ -19,8 +19,8 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
         <div className="rules-content">
           <section className="rule-section">
             <h3>🎯 ゲームの目的</h3>
-            <p>手札の合計値を23または-23に近づけることが目標です。<br />
-                23または-23に近いほど良い手札になります。</p>
+            <p>手札の合計値を23または-23に近づけることが目標です．<br />
+                23または-23に近いほど良い手札になります．</p>
           </section>
 
           <section className="rule-section">
@@ -78,20 +78,20 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
           <section className="rule-section">
             <h3>🎲 Sabacc Shift（サバック・シフト）</h3>
-            <p>両者が手札を確定した後、25%の確率でSabacc Shiftが起こります。ロックしていないカードの値が、ランダムに変わってしまいます。</p>
+            <p>両者が手札を確定した後、25%の確率でSabacc Shiftが起こります．ロックしていないカードの値が、ランダムに変わってしまいます．</p>
           </section>
 
           <section className="rule-section">
             <h3>⚖️ 勝敗の決め方</h3>
-                          <ol>
-                <li>まず、Idiot's Arrayがあるかチェックします</li>
-                <p>The Idiot + 2 + 3 の組み合わせがある場合は即座に勝利</p>
-                <li>次に、Pure Sabaccがあるかチェックします</li>
-                <p>手札の合計が23または-23の場合は特別な勝利</p>
-                <li>爆発していないかチェックします</li>
-                <p>手札の合計が24以上または-24以下の場合は即座に敗北</p>
-                <li>最後に、手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）</li>
-              </ol>
+            <ol>
+              <li>まず、Idiot's Arrayがあるかチェックします</li>
+              <p>The Idiot + 2 + 3 の組み合わせがある場合は即座に勝利</p>
+              <li>次に、Pure Sabaccがあるかチェックします</li>
+              <p>手札の合計が23または-23の場合は特別な勝利</p>
+              <li>爆発していないかチェックします</li>
+              <p>手札の合計が24以上または-24以下の場合は即座に敗北</p>
+              <li>最後に、手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）</li>
+            </ol>
           </section>
         </div>
       </div>
