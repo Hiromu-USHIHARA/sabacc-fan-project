@@ -43,7 +43,7 @@ const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules, language, o
         { icon: '🧪⚔️🦯🪙', text: '4 suits (Flasks, Sabers, Staves, Coins)' },
         { icon: '⭐', text: '8 special cards' },
         { icon: '🎲', text: 'Sabacc Shift feature' },
-        { icon: '🏆', text: 'Special victory conditions (Idiot\'s Array, Pure Sabacc)' }
+        { icon: '🏆', text: 'Special winning conditions (Idiot\'s Array, Pure Sabacc)' }
       ]
     }
   };

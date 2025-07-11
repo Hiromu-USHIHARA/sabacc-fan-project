@@ -65,17 +65,17 @@ const SabaccGame: React.FC<SabaccGameProps> = ({ onBackToTop, onShowRules, langu
         cardExchanged: 'Card exchanged.',
         stood: 'Stand.',
         dealerTurn: 'Stand. Dealer\'s turn.',
-        gameStart: 'Game start! Your turn.',
-        cardLocked: 'Card placed in interference field.',
-        dealerTurnComplete: 'Dealer\'s turn complete.',
+        gameStart: 'Game started! Your turn.',
+        cardLocked: 'Card locked in interference field.',
+        dealerTurnComplete: 'Dealer\'s turn completed.',
         sabaccShiftPending: 'Sabacc Shift may occur...',
         sabaccShiftOccurred: 'Sabacc Shift occurred!',
-        idiotsArrayPlayer: 'Idiot\'s Array! Player victory!',
-        idiotsArrayDealer: 'Idiot\'s Array! Dealer victory!',
-        pureSabaccPlayer: 'Pure Sabacc! Player victory!',
-        pureSabaccDealer: 'Pure Sabacc! Dealer victory!',
-        playerVictory: 'Player victory!',
-        dealerVictory: 'Dealer victory!'
+        idiotsArrayPlayer: 'Idiot\'s Array! Player wins!',
+        idiotsArrayDealer: 'Idiot\'s Array! Dealer wins!',
+        pureSabaccPlayer: 'Pure Sabacc! Player wins!',
+        pureSabaccDealer: 'Pure Sabacc! Dealer wins!',
+        playerVictory: 'Player wins!',
+        dealerVictory: 'Dealer wins!'
       }
     }
   };

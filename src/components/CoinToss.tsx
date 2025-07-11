@@ -27,8 +27,8 @@ const CoinToss: React.FC<CoinTossProps> = ({ isVisible, onComplete, language = '
       player: 'Player',
       dealer: 'Dealer',
       status: 'Flipping coin...',
-      playerVictory: 'Player victory!',
-      dealerVictory: 'Dealer victory!'
+      playerVictory: 'Player wins!',
+      dealerVictory: 'Dealer wins!'
     }
   };
 

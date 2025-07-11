@@ -124,7 +124,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose, language }) =>
             'Player Turn: Choose from the buttons at the bottom of the screen',
             'Dealer Turn: Computer automatically decides actions',
             'Sabacc Shift: After both players finalize their hands, there\'s a 25% chance that unlocked card values change',
-            'Victory Decision: Winner is determined by special conditions or normal comparison'
+            'Win Decision: Winner is determined by special conditions or normal comparison'
           ],
           actions: [
             '🃏 Draw: Draw 1 card from the deck (maximum 5 cards in hand)',
@@ -134,11 +134,11 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose, language }) =>
           ]
         },
         victory: {
-          title: '🏆 Special Victory Conditions',
+          title: '🏆 Special Winning Conditions',
           conditions: [
-            'Idiot\'s Array: The Idiot + 2 + 3 combination → Instant victory',
-            'Pure Sabacc: Hand total of 23 or -23 → Special victory',
-            'Bomb Out: Hand total of 24 or higher, or -24 or lower → Instant defeat'
+            'Idiot\'s Array: The Idiot + 2 + 3 combination → Instant win',
+            'Pure Sabacc: Hand total of 23 or -23 → Special win',
+            'Bomb Out: Hand total of 24 or higher, or -24 or lower → Instant loss'
           ]
         },
         shift: {
@@ -146,7 +146,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose, language }) =>
           content: 'After both players finalize their hands, there\'s a 25% chance that Sabacc Shift occurs. Unlocked card values change randomly.'
         },
         scoring: {
-          title: '⚖️ Victory Determination',
+          title: '⚖️ Win Determination',
           steps: [
             'First, check for Idiot\'s Array',
             'Next, check for Pure Sabacc',
@@ -154,9 +154,9 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose, language }) =>
             'Finally, the hand total closest to 23 or -23 wins (if tied, decided randomly)'
           ],
           details: [
-            'The Idiot + 2 + 3 combination results in instant victory',
-            'Hand total of 23 or -23 results in special victory',
-            'Hand total of 24 or higher, or -24 or lower results in instant defeat'
+            'The Idiot + 2 + 3 combination results in instant win',
+            'Hand total of 23 or -23 results in special win',
+            'Hand total of 24 or higher, or -24 or lower results in instant loss'
           ]
         }
       }
