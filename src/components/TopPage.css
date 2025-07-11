@@ -38,8 +38,23 @@
 .game-subtitle {
   font-size: 1.5em;
   color: #ecf0f1;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-style: italic;
+}
+
+.fan-made-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(155, 89, 182, 0.3);
 }
 
 .game-description {

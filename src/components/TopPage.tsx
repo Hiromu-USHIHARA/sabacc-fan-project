@@ -10,8 +10,9 @@ const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules }) => {
   return (
     <div className="top-page">
       <div className="top-content">
-        <h1 className="game-title">Sabacc</h1>
-        <div className="game-subtitle">スター・ウォーズの伝説的カードゲーム</div>
+        <h1 className="game-title">Sabacc Fan</h1>
+        <div className="game-subtitle">スター・ウォーズに登場するカードゲームのファンメイド作品です</div>
+        {/* <div className="fan-made-badge">Fan-Made Game</div> */}
         
         <div className="game-description">
           <p>プレイヤーとディーラーが対戦するSabaccゲームです。</p>
