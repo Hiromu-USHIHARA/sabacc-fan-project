@@ -267,7 +267,7 @@ export function getDealerAction(hand: Card[], playerHand: Card[]): PlayerAction 
     
     // プレイヤーの手札も考慮
     const playerHasSpecialCard = playerHand.some(card => card.suit === null);
-    const playerHasHighValueCard = playerHand.some(card => card.value >= 10);
+    // const playerHasHighValueCard = playerHand.some(card => card.value >= 10);
     
     // プレイヤーとの点数比較に基づく戦略
     if (scoreDifference > 5) {
@@ -359,7 +359,7 @@ export function getDealerStrategy(hand: Card[], playerHand: Card[]): {
     const specialCards = hand.filter(card => card.suit === null);
     const highValueCards = hand.filter(card => card.value >= 10);
     const playerSpecialCards = playerHand.filter(card => card.suit === null);
-    const playerHighValueCards = playerHand.filter(card => card.value >= 10);
+    // const playerHighValueCards = playerHand.filter(card => card.value >= 10);
     
     // プレイヤーとの点数比較に基づく戦略
     const scoreDifference = calculateHandTotal(playerHand) - calculateHandTotal(hand);
