@@ -99,7 +99,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         message: currentTexts.messages.gameStart,
       }));
     }
-  }, [currentTexts.messages.gameStart]);
+  }, [gameState.message, currentTexts.messages.gameStart]);
 
   const handlePlayerAction = (action: PlayerAction) => {
     if (
@@ -349,14 +349,14 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
     <div className="sabacc-game">
       <div className="game-header">
         <div className="header-top">
-          <button className="back-btn" onClick={onBackToTop}>
+          <button type="button" className="back-btn" onClick={onBackToTop}>
             {currentTexts.backButton}
           </button>
           <div className="title-section">
             <h1>{currentTexts.title}</h1>
             {/* <p className="fan-made-subtitle">Fan-Made Game</p> */}
           </div>
-          <button className="rules-btn" onClick={onShowRules}>
+          <button type="button" className="rules-btn" onClick={onShowRules}>
             {currentTexts.rulesButton}
           </button>
         </div>

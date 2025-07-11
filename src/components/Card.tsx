@@ -65,10 +65,12 @@ const CardComponent: React.FC<CardProps> = ({
   }
 
   return (
-    <div
+    <button
+      type="button"
       className={`card ${isLocked ? 'card-locked' : ''} ${isSelectable ? 'card-selectable' : ''} ${isSelected ? 'card-selected' : ''}`}
       onClick={handleClick}
       style={{ borderColor: getCardColor(card.suit) }}
+      disabled={!isSelectable}
     >
       <div className="card-header">
         <span className="card-value">{card.value}</span>
@@ -76,7 +78,7 @@ const CardComponent: React.FC<CardProps> = ({
       </div>
       <div className="card-name">{card.name}</div>
       {isLocked && <div className="card-lock-indicator">🔒</div>}
-    </div>
+    </button>
   );
 };
 
