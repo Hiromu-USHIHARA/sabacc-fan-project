@@ -19,74 +19,74 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
         <div className="rules-content">
           <section className="rule-section">
             <h3>🎯 ゲームの目的</h3>
-            <p>手札の合計値を±23に近づけることが目標です。</p>
+            <p>手札の合計値を23または-23に近づけることが目標です。23に近いほど良い手札になります。</p>
           </section>
 
           <section className="rule-section">
-            <h3>🃏 カード構成</h3>
+            <h3>🃏 カードの種類</h3>
             <ul>
-              <li><strong>スタンダードカード（60枚）</strong>
+              <li><strong>通常のカード（60枚）</strong>
                 <ul>
-                  <li>Flasks（⚗️）: 1-11, Commander(12), Mistress(13), Master(14), Ace(15)</li>
-                  <li>Sabers（⚔️）: 1-11, Commander(12), Mistress(13), Master(14), Ace(15)</li>
-                  <li>Staves（🏹）: 1-11, Commander(12), Mistress(13), Master(14), Ace(15)</li>
-                  <li>Coins（💰）: 1-11, Commander(12), Mistress(13), Master(14), Ace(15)</li>
+                  <li>Flasks（⚗️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Sabers（⚔️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Staves（🏹）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
+                  <li>Coins（💰）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)</li>
                 </ul>
               </li>
-              <li><strong>特殊カード（16枚）</strong>
+              <li><strong>特別なカード（16枚）</strong>
                 <ul>
-                  <li>Balance: -11</li>
-                  <li>The Idiot: 0</li>
-                  <li>Endurance: -8</li>
-                  <li>Moderation: -14</li>
-                  <li>The Evil One: -15</li>
-                  <li>The Queen of Air and Darkness: -2</li>
-                  <li>Demise: -13</li>
-                  <li>The Star: -10</li>
+                  <li>Balance（バランス）: -11</li>
+                  <li>The Idiot（愚者）: 0</li>
+                  <li>Endurance（忍耐）: -8</li>
+                  <li>Moderation（節制）: -14</li>
+                  <li>The Evil One（悪者）: -15</li>
+                  <li>The Queen of Air and Darkness（闇の女王）: -2</li>
+                  <li>Demise（終焉）: -13</li>
+                  <li>The Star（星）: -10</li>
                 </ul>
               </li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🎮 ゲームフロー</h3>
+            <h3>🎮 ゲームの流れ</h3>
             <ol>
-              <li><strong>初期化</strong>: 各プレイヤーに2枚ずつカードを配布</li>
-              <li><strong>プレイヤーターン</strong>: 以下のアクションから選択
+              <li><strong>ゲーム開始</strong>: プレイヤーとディーラーに2枚ずつカードが配られます</li>
+              <li><strong>プレイヤーの番</strong>: 以下の行動から選んでください
                 <ul>
-                  <li><strong>ドロー</strong>: カードを1枚引く（最大5枚まで）</li>
-                  <li><strong>交換</strong>: 手札1枚と山札のトップカードを交換</li>
-                  <li><strong>スタンド</strong>: 手札を確定</li>
-                  <li><strong>ロック</strong>: 手札1枚をSabacc Shiftから保護</li>
+                  <li><strong>カードを引く</strong>: 山札からカードを1枚引きます（手札は最大5枚まで）</li>
+                  <li><strong>カードを交換</strong>: 手札の1枚を選んで、山札の一番上のカードと交換します</li>
+                  <li><strong>手札を確定</strong>: これ以上の行動をやめて、現在の手札で勝負します</li>
+                  <li><strong>カードをロック</strong>: 手札の1枚を選んで、Sabacc Shiftから守ります</li>
                 </ul>
               </li>
-              <li><strong>ディーラーターン</strong>: AIが自動で行動を決定</li>
-              <li><strong>Sabacc Shift</strong>: 両者がスタンド後、25%の確率で発生</li>
-              <li><strong>勝敗判定</strong>: 特別条件または通常の比較で勝者決定</li>
+              <li><strong>ディーラーの番</strong>: コンピュータが自動的に行動を決めます</li>
+              <li><strong>Sabacc Shift</strong>: 両者が手札を確定した後、25%の確率でカードの値が変わります</li>
+              <li><strong>勝敗の決定</strong>: 特別な条件や通常の比較で勝者が決まります</li>
             </ol>
           </section>
 
           <section className="rule-section">
-            <h3>🏆 特別勝利条件</h3>
+            <h3>🏆 特別な勝利条件</h3>
             <ul>
-              <li><strong>Idiot's Array</strong>: The Idiot + 2 + 3 → 即勝利</li>
-              <li><strong>Pure Sabacc</strong>: 合計が23または-23 → 特別勝利</li>
-              <li><strong>爆発（Bomb Out）</strong>: 合計が±24以上 → 即敗北</li>
+              <li><strong>Idiot's Array（愚者の配列）</strong>: The Idiot + 2 + 3 の組み合わせ → 即座に勝利</li>
+              <li><strong>Pure Sabacc（純粋なサバック）</strong>: 手札の合計が23または-23 → 特別な勝利</li>
+              <li><strong>爆発（Bomb Out）</strong>: 手札の合計が24以上または-24以下 → 即座に敗北</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🎲 Sabacc Shift</h3>
-            <p>ラウンド終了時に25%の確率で発生します。ロックされていないカードの値がランダムに変更されます。</p>
+            <h3>🎲 Sabacc Shift（サバック・シフト）</h3>
+            <p>両者が手札を確定した後、25%の確率でSabacc Shiftが起こります。ロックしていないカードの値が、ランダムに変わってしまいます。これがSabaccの醍醐味です！</p>
           </section>
 
           <section className="rule-section">
-            <h3>⚖️ 勝敗判定</h3>
+            <h3>⚖️ 勝敗の決め方</h3>
             <ol>
-              <li>Idiot's Arrayをチェック</li>
-              <li>Pure Sabaccをチェック</li>
-              <li>爆発をチェック</li>
-              <li>±23に近い方が勝利（引き分けの場合はランダム）</li>
+              <li>まず、Idiot's Arrayがあるかチェックします</li>
+              <li>次に、Pure Sabaccがあるかチェックします</li>
+              <li>爆発していないかチェックします</li>
+              <li>最後に、手札の合計が23に近い方が勝利です（同じ場合はランダムで決まります）</li>
             </ol>
           </section>
         </div>
