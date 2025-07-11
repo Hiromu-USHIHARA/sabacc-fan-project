@@ -19,7 +19,8 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
         <div className="rules-content">
           <section className="rule-section">
             <h3>🎯 ゲームの目的</h3>
-            <p>手札の合計値を23または-23に近づけることが目標です。23に近いほど良い手札になります。</p>
+            <p>手札の合計値を23または-23に近づけることが目標です。<br />
+                23または-23に近いほど良い手札になります。</p>
           </section>
 
           <section className="rule-section">
@@ -52,12 +53,12 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <h3>🎮 ゲームの流れ</h3>
             <ol>
               <li><strong>ゲーム開始</strong>: プレイヤーとディーラーに2枚ずつカードが配られます</li>
-              <li><strong>プレイヤーの番</strong>: 以下の行動から選んでください
+              <li><strong>プレイヤーの番</strong>: 画面下部のボタンから選んでください
                 <ul>
-                  <li><strong>カードを引く</strong>: 山札からカードを1枚引きます（手札は最大5枚まで）</li>
-                  <li><strong>カードを交換</strong>: 手札の1枚を選んで、山札の一番上のカードと交換します</li>
-                  <li><strong>手札を確定</strong>: これ以上の行動をやめて、現在の手札で勝負します</li>
-                  <li><strong>カードをロック</strong>: 手札の1枚を選んで、Sabacc Shiftから守ります</li>
+                  <li><strong>🃏 ドロー</strong>: 山札からカードを1枚引きます（手札は最大5枚まで）</li>
+                  <li><strong>🔄 交換</strong>: 手札の1枚をクリックして選んでから、交換ボタンを押します</li>
+                  <li><strong>✋ スタンド</strong>: これ以上の行動をやめて、現在の手札で勝負します</li>
+                  <li><strong>🔒 ロック</strong>: 手札の1枚をクリックして選んでから、ロックボタンを押します</li>
                 </ul>
               </li>
               <li><strong>ディーラーの番</strong>: コンピュータが自動的に行動を決めます</li>
@@ -69,7 +70,7 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           <section className="rule-section">
             <h3>🏆 特別な勝利条件</h3>
             <ul>
-              <li><strong>Idiot's Array（愚者の配列）</strong>: The Idiot + 2 + 3 の組み合わせ → 即座に勝利</li>
+              <li><strong>Idiot's Array（愚者の配列）</strong>: The Idiot（愚者）+ 2 + 3 の3枚の組み合わせ → 即座に勝利</li>
               <li><strong>Pure Sabacc（純粋なサバック）</strong>: 手札の合計が23または-23 → 特別な勝利</li>
               <li><strong>爆発（Bomb Out）</strong>: 手札の合計が24以上または-24以下 → 即座に敗北</li>
             </ul>
@@ -82,12 +83,15 @@ const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
           <section className="rule-section">
             <h3>⚖️ 勝敗の決め方</h3>
-            <ol>
-              <li>まず、Idiot's Arrayがあるかチェックします</li>
-              <li>次に、Pure Sabaccがあるかチェックします</li>
-              <li>爆発していないかチェックします</li>
-              <li>最後に、手札の合計が23に近い方が勝利です（同じ場合はランダムで決まります）</li>
-            </ol>
+                          <ol>
+                <li>まず、Idiot's Arrayがあるかチェックします</li>
+                <p>The Idiot + 2 + 3 の組み合わせがある場合は即座に勝利</p>
+                <li>次に、Pure Sabaccがあるかチェックします</li>
+                <p>手札の合計が23または-23の場合は特別な勝利</p>
+                <li>爆発していないかチェックします</li>
+                <p>手札の合計が24以上または-24以下の場合は即座に敗北</p>
+                <li>最後に、手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）</li>
+              </ol>
           </section>
         </div>
       </div>

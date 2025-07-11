@@ -15,7 +15,7 @@ const TopPage: React.FC<TopPageProps> = ({ onStartGame, onShowRules }) => {
         
         <div className="game-description">
           <p>プレイヤーとディーラーが対戦するSabaccゲームです。</p>
-          <p>目標は手札の合計値を±23に近づけることです。</p>
+          <p>目標は手札の合計値を23または-23に近づけることです。</p>
         </div>
         
         <div className="action-buttons">
