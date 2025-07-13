@@ -59,8 +59,8 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         cardExchanged: 'カードを交換しました．',
         stood: 'スタンドしました．',
         dealerTurn: 'スタンドしました．ディーラーのターンです．',
-        gameStart: 'ゲーム開始！あなたのターンです。',
-        cardLocked: 'カードを干渉フィールドに配置しました．',
+        gameStart: 'ゲーム開始！あなたのターンです．',
+        cardLocked: 'カードをロックしました．',
         cardUnlocked: 'カードのロックを解除しました．',
         dealerTurnComplete: 'ディーラーのターンが完了しました．',
         sabaccShiftPending: 'Sabacc Shiftが発生する可能性があります...',
@@ -82,18 +82,18 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         cardDrawn: 'Card drawn.',
         cardExchanged: 'Card exchanged.',
         stood: 'Stand.',
-        dealerTurn: "Stand. Dealer's turn.",
+        dealerTurn: "Stand. Dealer's turn now.",
         gameStart: 'Game started! Your turn.',
-        cardLocked: 'Card locked in interference field.',
+        cardLocked: 'Card locked.',
         cardUnlocked: 'Card unlocked.',
         dealerTurnComplete: "Dealer's turn completed.",
         sabaccShiftPending: 'Sabacc Shift may occur...',
         sabaccShiftOccurred: 'Sabacc Shift occurred!',
-        idiotsArrayPlayer: "Idiot's Array! Player wins!",
+        idiotsArrayPlayer: "Idiot's Array! You win!",
         idiotsArrayDealer: "Idiot's Array! Dealer wins!",
-        pureSabaccPlayer: 'Pure Sabacc! Player wins!',
+        pureSabaccPlayer: 'Pure Sabacc! You win!',
         pureSabaccDealer: 'Pure Sabacc! Dealer wins!',
-        playerVictory: 'Player wins!',
+        playerVictory: 'You win!',
         dealerVictory: 'Dealer wins!',
       },
     },
@@ -294,7 +294,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 
           // 25%の確率でSabacc Shift
           if (Math.random() < 0.25) {
-            // 干渉フィールドに置かれたカード以外を変更
+            // ロックされたカード以外を変更
             const newPlayerHand = performSabaccShift(
               finalGameState.player.hand,
               finalGameState.player.lockedCard
@@ -424,9 +424,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
             className={`game-message ${gameState.gamePhase === 'finished' ? 'game-message-finished' : ''} ${gameState.gamePhase === 'sabaccShift' ? 'game-message-shift' : ''}`}
           >
             {gameState.message}
-          </div>
-          <div className="deck-info">
-            {currentTexts.deckInfo} {gameState.deck.length}
           </div>
         </div>
 

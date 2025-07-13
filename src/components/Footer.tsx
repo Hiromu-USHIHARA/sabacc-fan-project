@@ -17,7 +17,7 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
     },
     en: {
       title: '🎮 Sabacc Fan - Fan-Made Project',
-      subtitle: 'Experience the card game from Star Wars!',
+      subtitle: 'Experience the card game appearing in Star Wars!',
       disclaimer:
         'This is a fan-made project and is not affiliated with Lucasfilm Ltd.',
     },

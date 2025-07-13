@@ -30,10 +30,10 @@ const RulesModal: React.FC<RulesModalProps> = ({
             normal: '通常のカード（60枚）',
             special: '特別なカード（16枚）',
             suits: [
-              'Flasks（🧪）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Sabers（⚔️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Staves（🦯）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Coins（🪙）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
+                          'Flasks（🧪）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Sabers（⚔️）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Staves（🦯）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Coins（🪙）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
             ],
             specialCards: [
               'Balance（バランス）: -11',
@@ -48,19 +48,19 @@ const RulesModal: React.FC<RulesModalProps> = ({
           },
         },
         gameplay: {
-          title: '🎮 ゲームの流れ',
+          title: '📋 ゲームの流れ',
           steps: [
             'ゲーム開始: プレイヤーとディーラーに2枚ずつカードが配られます',
             'プレイヤーの番: 画面下部のボタンから選んでください',
             'ディーラーの番: コンピュータが自動的に行動を決めます',
-            'Sabacc Shift: 両者が手札を確定した後、25%の確率でロックしていないカードの値が変わります',
+            'Sabacc Shift: 両者が手札を確定した後，25%の確率でロックされていないカードの値が変わります',
             '勝敗の決定: 特別な条件や通常の比較で勝者が決まります',
           ],
           actions: [
-            '🃏 ドロー: 山札からカードを1枚引きます（手札は最大5枚まで）',
-            '🔄 交換: 手札の1枚をクリックして選んでから、交換ボタンを押します',
-            '✋ スタンド: これ以上の行動をやめて、現在の手札で勝負します',
-            '🔒 ロック: 手札の1枚をクリックして選んでから、ロックボタンを押します',
+            '➕ ドロー: 山札からカードを1枚引きます（手札は最大5枚まで）',
+            '🔄 交換: 手札の1枚をクリックして選んでから，交換ボタンを押します',
+            '✋ スタンド: これ以上の行動をやめて，現在の手札で勝負します',
+            '🔒 ロック: 手札の1枚をクリックして選んでから，ロックボタンを押します',
           ],
         },
         victory: {
@@ -74,15 +74,15 @@ const RulesModal: React.FC<RulesModalProps> = ({
         shift: {
           title: '🎲 Sabacc Shift（サバック・シフト）',
           content:
-            '両者が手札を確定した後、25%の確率でSabacc Shiftが起こります．ロックしていないカードの値が、ランダムに変わってしまいます．',
+            '両者が手札を確定した後，25%の確率でSabacc Shiftが起こります．ロックされていないカードの値が，ランダムに変わってしまいます．',
         },
         scoring: {
-          title: '⚖️ 勝敗の決め方',
+          title: '🏁 勝敗の決め方',
           steps: [
-            "まず、Idiot's Arrayがあるかチェックします",
-            '次に、Pure Sabaccがあるかチェックします',
+            "まず，Idiot's Arrayがあるかチェックします",
+            '次に，Pure Sabaccがあるかチェックします',
             '爆発していないかチェックします',
-            '最後に、手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）',
+            '最後に，手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）',
           ],
           details: [
             'The Idiot + 2 + 3 の組み合わせがある場合は即座に勝利',
@@ -125,16 +125,16 @@ const RulesModal: React.FC<RulesModalProps> = ({
           },
         },
         gameplay: {
-          title: '🎮 Game Flow',
+          title: '📋 Game Flow',
           steps: [
             'Game Start: Both player and dealer receive 2 cards each',
             'Player Turn: Choose from the buttons at the bottom of the screen',
             'Dealer Turn: Computer automatically decides actions',
-            "Sabacc Shift: After both players finalize their hands, there's a 25% chance that unlocked card values change",
+            "Sabacc Shift: After both players finalize their hands, there's a 25% chance that unlocked card values will change",
             'Win Decision: Winner is determined by special conditions or normal comparison',
           ],
           actions: [
-            '🃏 Draw: Draw 1 card from the deck (maximum 5 cards in hand)',
+            '➕ Draw: Draw 1 card from the deck (maximum 5 cards in hand)',
             '🔄 Exchange: Click on a card in your hand to select it, then press the exchange button',
             '✋ Stand: Stop taking actions and compete with your current hand',
             '🔒 Lock: Click on a card in your hand to select it, then press the lock button',
@@ -154,7 +154,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
             "After both players finalize their hands, there's a 25% chance that Sabacc Shift occurs. Unlocked card values change randomly.",
         },
         scoring: {
-          title: '⚖️ Win Determination',
+          title: '🏁 Win Determination',
           steps: [
             "First, check for Idiot's Array",
             'Next, check for Pure Sabacc',

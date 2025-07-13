@@ -29,10 +29,10 @@ const CoinToss: React.FC<CoinTossProps> = ({
     },
     en: {
       title: 'Tie! Coin toss to determine winner',
-      player: 'Player',
+      player: 'You',
       dealer: 'Dealer',
       status: 'Flipping coin...',
-      playerVictory: 'Player wins!',
+      playerVictory: 'You win!',
       dealerVictory: 'Dealer wins!',
     },
   };
@@ -46,12 +46,12 @@ const CoinToss: React.FC<CoinTossProps> = ({
 
       // コイントスアニメーション
       setTimeout(() => {
-        // アニメーション終了、結果決定
+        // アニメーション終了，結果決定
         const winner = Math.random() < 0.5 ? 'player' : 'dealer';
         setResult(winner);
 
         setTimeout(() => {
-          // 結果表示後、コールバック実行
+          // 結果表示後，コールバック実行
           onComplete(winner);
         }, 2000);
       }, 3000);
