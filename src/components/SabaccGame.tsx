@@ -60,7 +60,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         stood: 'スタンドしました．',
         dealerTurn: 'スタンドしました．ディーラーのターンです．',
         gameStart: 'ゲーム開始！あなたのターンです。',
-        cardLocked: 'カードを干渉フィールドに配置しました．',
+        cardLocked: 'カードをロックしました．',
         cardUnlocked: 'カードのロックを解除しました．',
         dealerTurnComplete: 'ディーラーのターンが完了しました．',
         sabaccShiftPending: 'Sabacc Shiftが発生する可能性があります...',
@@ -84,7 +84,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         stood: 'Stand.',
         dealerTurn: "Stand. Dealer's turn.",
         gameStart: 'Game started! Your turn.',
-        cardLocked: 'Card locked in interference field.',
+        cardLocked: 'Card locked.',
         cardUnlocked: 'Card unlocked.',
         dealerTurnComplete: "Dealer's turn completed.",
         sabaccShiftPending: 'Sabacc Shift may occur...',
@@ -294,7 +294,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 
           // 25%の確率でSabacc Shift
           if (Math.random() < 0.25) {
-            // 干渉フィールドに置かれたカード以外を変更
+            // ロックされたカード以外を変更
             const newPlayerHand = performSabaccShift(
               finalGameState.player.hand,
               finalGameState.player.lockedCard
