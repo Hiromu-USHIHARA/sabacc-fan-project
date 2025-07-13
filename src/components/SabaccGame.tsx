@@ -183,7 +183,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         break;
 
       case 'stand':
-        if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging') {
+        if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking') {
           player.hasStood = true;
           newGameState.message = currentTexts.messages.stood;
           // スタンドしたら自動的にディーラーのターンに移行
@@ -370,7 +370,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
   const canStand =
     gameState.currentTurn === 'player' &&
     gameState.gamePhase === 'playing' &&
-    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
+    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking');
 
   const canLock =
     gameState.currentTurn === 'player' &&
