@@ -246,35 +246,36 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         );
 
         // ディーラーは複数の行動を一度に実行
-        let actionTaken = false;
+        let actionCount = 0;
+        const maxActions = 3; // 最大3回の行動まで
 
         // 1. カードを引く（必要に応じて）
-        if (strategy.shouldDraw && dealer.hand.length < 5) {
+        if (strategy.shouldDraw && dealer.hand.length < 5 && actionCount < maxActions) {
           const { card, newDeck } = drawCard(newGameState.deck);
           dealer.hand.push(card);
           newGameState.deck = newDeck;
-          actionTaken = true;
+          actionCount++;
         }
 
         // 2. カードを交換する（必要に応じて）
         if (
           strategy.shouldExchange &&
           newGameState.deck.length > 0 &&
-          !actionTaken
+          actionCount < maxActions
         ) {
           const exchangeIndex = strategy.exchangeCardIndex ?? 0;
           const { card: newCard, newDeck } = drawCard(newGameState.deck);
           const oldCard = dealer.hand[exchangeIndex];
           dealer.hand[exchangeIndex] = newCard;
           newGameState.deck = [oldCard, ...newDeck];
-          actionTaken = true;
+          actionCount++;
         }
 
         // 3. カードをロックする（必要に応じて）
-        if (strategy.shouldLock && !dealer.lockedCard && !actionTaken) {
+        if (strategy.shouldLock && !dealer.lockedCard && actionCount < maxActions) {
           const lockIndex = strategy.lockCardIndex ?? 0;
           dealer.lockedCard = dealer.hand[lockIndex];
-          actionTaken = true;
+          actionCount++;
         }
 
         // 4. スタンドする
