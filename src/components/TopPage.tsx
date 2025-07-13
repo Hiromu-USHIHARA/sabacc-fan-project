@@ -34,12 +34,12 @@ const TopPage: React.FC<TopPageProps> = ({
         },
         { icon: '⭐', text: '8種類の特殊カード' },
         { icon: '🎲', text: 'Sabacc Shift機能' },
-        { icon: '🏆', text: "特別勝利条件（Idiot's Array, Pure Sabacc）" },
+        { icon: '🏆', text: "特別な勝利条件（Idiot's Array, Pure Sabacc）" },
       ],
     },
     en: {
       title: 'Sabacc Fan',
-      subtitle: 'A fan-made card game from Star Wars',
+      subtitle: 'A fan-made implementation of the card game from Star Wars',
       description: [
         'A Sabacc game where you compete against the dealer.',
         'The goal is to get your hand total close to 23 or -23.',

@@ -82,7 +82,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         cardDrawn: 'Card drawn.',
         cardExchanged: 'Card exchanged.',
         stood: 'Stand.',
-        dealerTurn: "Stand. Dealer's turn.",
+        dealerTurn: "Stand. Dealer's turn now.",
         gameStart: 'Game started! Your turn.',
         cardLocked: 'Card locked.',
         cardUnlocked: 'Card unlocked.',

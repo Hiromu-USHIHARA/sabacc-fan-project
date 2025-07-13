@@ -130,7 +130,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
             'Game Start: Both player and dealer receive 2 cards each',
             'Player Turn: Choose from the buttons at the bottom of the screen',
             'Dealer Turn: Computer automatically decides actions',
-            "Sabacc Shift: After both players finalize their hands, there's a 25% chance that unlocked card values change",
+            "Sabacc Shift: After both players finalize their hands, there's a 25% chance that unlocked card values will change",
             'Win Decision: Winner is determined by special conditions or normal comparison',
           ],
           actions: [
