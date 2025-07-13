@@ -425,9 +425,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
           >
             {gameState.message}
           </div>
-          <div className="deck-info">
-            {currentTexts.deckInfo} {gameState.deck.length}
-          </div>
         </div>
 
         <PlayerHand
