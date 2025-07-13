@@ -57,7 +57,7 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
           <div className="sabacc-shift-hand">
             <h3>{currentTexts.dealerHand}</h3>
             <div className="sabacc-shift-cards">
-              {dealerHand.map((card, index) => (
+              {dealerHand.map((card) => (
                 <div
                   key={`dealer-${card.id}`}
                   className={`sabacc-shift-card-wrapper ${dealerLockedCard?.id === card.id ? 'locked' : ''}`}
@@ -74,7 +74,7 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
           <div className="sabacc-shift-hand">
             <h3>{currentTexts.playerHand}</h3>
             <div className="sabacc-shift-cards">
-              {playerHand.map((card, index) => (
+              {playerHand.map((card) => (
                 <div
                   key={`player-${card.id}`}
                   className={`sabacc-shift-card-wrapper ${playerLockedCard?.id === card.id ? 'locked' : ''}`}
