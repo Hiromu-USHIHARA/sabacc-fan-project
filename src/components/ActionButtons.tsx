@@ -14,6 +14,7 @@ interface ActionButtonsProps {
   showResetButton?: boolean;
   onReset?: () => void;
   language?: Language;
+  isLockedCardSelected?: boolean;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -26,6 +27,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   showResetButton = false,
   onReset,
   language = 'ja',
+  isLockedCardSelected = false,
 }) => {
   const texts = {
     ja: {
@@ -33,6 +35,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       exchange: '🔄 交換',
       stand: '✋ スタンド',
       lock: '🔒 ロック',
+      unlock: '🔓 ロック解除',
       newGame: '🎮 新しいゲーム',
     },
     en: {
@@ -40,6 +43,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       exchange: '🔄 Exchange',
       stand: '✋ Stand',
       lock: '🔒 Lock',
+      unlock: '🔓 Unlock',
       newGame: '🎮 New Game',
     },
   };
@@ -81,9 +85,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             type="button"
             className="action-btn lock-btn"
             onClick={() => onAction?.('lock')}
-            disabled={!canLock || selectedCardIndex === undefined}
+            disabled={!canLock}
           >
-            {currentTexts.lock}
+            {isLockedCardSelected ? currentTexts.unlock : currentTexts.lock}
           </button>
         </>
       ) : (

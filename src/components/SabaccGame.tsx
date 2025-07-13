@@ -61,6 +61,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         dealerTurn: 'スタンドしました．ディーラーのターンです．',
         gameStart: 'ゲーム開始！あなたのターンです。',
         cardLocked: 'カードを干渉フィールドに配置しました．',
+        cardUnlocked: 'カードのロックを解除しました．',
         dealerTurnComplete: 'ディーラーのターンが完了しました．',
         sabaccShiftPending: 'Sabacc Shiftが発生する可能性があります...',
         sabaccShiftOccurred: 'Sabacc Shiftが発生しました！',
@@ -84,6 +85,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         dealerTurn: "Stand. Dealer's turn.",
         gameStart: 'Game started! Your turn.',
         cardLocked: 'Card locked in interference field.',
+        cardUnlocked: 'Card unlocked.',
         dealerTurnComplete: "Dealer's turn completed.",
         sabaccShiftPending: 'Sabacc Shift may occur...',
         sabaccShiftOccurred: 'Sabacc Shift occurred!',
@@ -183,7 +185,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         break;
 
       case 'stand':
-        if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging') {
+        if (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking') {
           player.hasStood = true;
           newGameState.message = currentTexts.messages.stood;
           // スタンドしたら自動的にディーラーのターンに移行
@@ -195,16 +197,24 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 
       case 'lock':
         if (
-          selectedCardIndex !== undefined &&
-          !player.lockedCard &&
           (playerTurnPhase === 'drawing' ||
             playerTurnPhase === 'exchanging' ||
             playerTurnPhase === 'locking')
         ) {
-          player.lockedCard = player.hand[selectedCardIndex];
-          newGameState.message = currentTexts.messages.cardLocked;
-          setSelectedCardIndex(undefined);
-          setPlayerTurnPhase('locking');
+          // ロック解除の場合（ロックされたカードが存在する場合）
+          if (player.lockedCard !== null) {
+            player.lockedCard = null;
+            newGameState.message = currentTexts.messages.cardUnlocked;
+            setSelectedCardIndex(undefined);
+            setPlayerTurnPhase('drawing');
+          }
+          // ロックする場合（ロックされていないカードを選択している場合）
+          else if (selectedCardIndex !== undefined) {
+            player.lockedCard = player.hand[selectedCardIndex];
+            newGameState.message = currentTexts.messages.cardLocked;
+            setSelectedCardIndex(undefined);
+            setPlayerTurnPhase('locking');
+          }
         }
         break;
     }
@@ -370,16 +380,20 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
   const canStand =
     gameState.currentTurn === 'player' &&
     gameState.gamePhase === 'playing' &&
-    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging');
+    (playerTurnPhase === 'drawing' || playerTurnPhase === 'exchanging' || playerTurnPhase === 'locking');
 
   const canLock =
     gameState.currentTurn === 'player' &&
     gameState.gamePhase === 'playing' &&
-    selectedCardIndex !== undefined &&
-    !gameState.player.lockedCard &&
     (playerTurnPhase === 'drawing' ||
       playerTurnPhase === 'exchanging' ||
-      playerTurnPhase === 'locking');
+      playerTurnPhase === 'locking') &&
+    (
+      // ロックされたカードが存在する場合（ロック解除のみ、選択状態は問わない）
+      gameState.player.lockedCard !== null ||
+      // ロックされていない場合のみカード選択時にロック可能
+      (gameState.player.lockedCard === null && selectedCardIndex !== undefined)
+    );
 
   return (
     <div className="sabacc-game">
@@ -435,6 +449,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
             canLock={canLock}
             selectedCardIndex={selectedCardIndex}
             language={language}
+            isLockedCardSelected={gameState.player.lockedCard !== null}
           />
         )}
 
