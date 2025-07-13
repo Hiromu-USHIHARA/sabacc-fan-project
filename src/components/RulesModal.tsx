@@ -30,10 +30,10 @@ const RulesModal: React.FC<RulesModalProps> = ({
             normal: '通常のカード（60枚）',
             special: '特別なカード（16枚）',
             suits: [
-              'Flasks（🧪）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Sabers（⚔️）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Staves（🦯）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
-              'Coins（🪙）: 数字1-11、Commander(12)、Mistress(13)、Master(14)、Ace(15)',
+                          'Flasks（🧪）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Sabers（⚔️）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Staves（🦯）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
+            'Coins（🪙）: 数字1-11，Commander(12)，Mistress(13)，Master(14)，Ace(15)',
             ],
             specialCards: [
               'Balance（バランス）: -11',
@@ -53,14 +53,14 @@ const RulesModal: React.FC<RulesModalProps> = ({
             'ゲーム開始: プレイヤーとディーラーに2枚ずつカードが配られます',
             'プレイヤーの番: 画面下部のボタンから選んでください',
             'ディーラーの番: コンピュータが自動的に行動を決めます',
-            'Sabacc Shift: 両者が手札を確定した後、25%の確率でロックされていないカードの値が変わります',
+            'Sabacc Shift: 両者が手札を確定した後，25%の確率でロックされていないカードの値が変わります',
             '勝敗の決定: 特別な条件や通常の比較で勝者が決まります',
           ],
           actions: [
             '➕ ドロー: 山札からカードを1枚引きます（手札は最大5枚まで）',
-            '🔄 交換: 手札の1枚をクリックして選んでから、交換ボタンを押します',
-            '✋ スタンド: これ以上の行動をやめて、現在の手札で勝負します',
-            '🔒 ロック: 手札の1枚をクリックして選んでから、ロックボタンを押します',
+            '🔄 交換: 手札の1枚をクリックして選んでから，交換ボタンを押します',
+            '✋ スタンド: これ以上の行動をやめて，現在の手札で勝負します',
+            '🔒 ロック: 手札の1枚をクリックして選んでから，ロックボタンを押します',
           ],
         },
         victory: {
@@ -74,15 +74,15 @@ const RulesModal: React.FC<RulesModalProps> = ({
         shift: {
           title: '🎲 Sabacc Shift（サバック・シフト）',
           content:
-            '両者が手札を確定した後、25%の確率でSabacc Shiftが起こります．ロックされていないカードの値が、ランダムに変わってしまいます．',
+            '両者が手札を確定した後，25%の確率でSabacc Shiftが起こります．ロックされていないカードの値が，ランダムに変わってしまいます．',
         },
         scoring: {
           title: '🏁 勝敗の決め方',
           steps: [
-            "まず、Idiot's Arrayがあるかチェックします",
-            '次に、Pure Sabaccがあるかチェックします',
+            "まず，Idiot's Arrayがあるかチェックします",
+            '次に，Pure Sabaccがあるかチェックします',
             '爆発していないかチェックします',
-            '最後に、手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）',
+            '最後に，手札の合計が23または-23に近い方が勝利です（同じ場合はランダムで決まります）',
           ],
           details: [
             'The Idiot + 2 + 3 の組み合わせがある場合は即座に勝利',

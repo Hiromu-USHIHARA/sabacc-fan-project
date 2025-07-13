@@ -59,7 +59,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         cardExchanged: 'カードを交換しました．',
         stood: 'スタンドしました．',
         dealerTurn: 'スタンドしました．ディーラーのターンです．',
-        gameStart: 'ゲーム開始！あなたのターンです。',
+        gameStart: 'ゲーム開始！あなたのターンです．',
         cardLocked: 'カードをロックしました．',
         cardUnlocked: 'カードのロックを解除しました．',
         dealerTurnComplete: 'ディーラーのターンが完了しました．',
