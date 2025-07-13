@@ -92,7 +92,7 @@
 .card-selected {
   border-width: 3px;
   border-style: solid;
-  transform: translateY(-4px);
+  transform: translateY(-16px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
