@@ -197,20 +197,19 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 
       case 'lock':
         if (
-          selectedCardIndex !== undefined &&
           (playerTurnPhase === 'drawing' ||
             playerTurnPhase === 'exchanging' ||
             playerTurnPhase === 'locking')
         ) {
-          // ロック解除の場合
-          if (player.lockedCard && player.lockedCard.id === player.hand[selectedCardIndex].id) {
+          // ロック解除の場合（ロックされたカードが存在する場合）
+          if (player.lockedCard !== null) {
             player.lockedCard = null;
             newGameState.message = currentTexts.messages.cardUnlocked;
             setSelectedCardIndex(undefined);
             setPlayerTurnPhase('drawing');
           }
-          // ロックする場合
-          else if (!player.lockedCard) {
+          // ロックする場合（ロックされていないカードを選択している場合）
+          else if (selectedCardIndex !== undefined) {
             player.lockedCard = player.hand[selectedCardIndex];
             newGameState.message = currentTexts.messages.cardLocked;
             setSelectedCardIndex(undefined);
@@ -386,13 +385,15 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
   const canLock =
     gameState.currentTurn === 'player' &&
     gameState.gamePhase === 'playing' &&
-    selectedCardIndex !== undefined &&
     (playerTurnPhase === 'drawing' ||
       playerTurnPhase === 'exchanging' ||
       playerTurnPhase === 'locking') &&
-    (!gameState.player.lockedCard || 
-     (gameState.player.lockedCard && 
-      gameState.player.lockedCard.id === gameState.player.hand[selectedCardIndex]?.id));
+    (
+      // ロックされたカードが存在する場合（ロック解除のみ、選択状態は問わない）
+      gameState.player.lockedCard !== null ||
+      // ロックされていない場合のみカード選択時にロック可能
+      (gameState.player.lockedCard === null && selectedCardIndex !== undefined)
+    );
 
   return (
     <div className="sabacc-game">
@@ -448,11 +449,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
             canLock={canLock}
             selectedCardIndex={selectedCardIndex}
             language={language}
-            isLockedCardSelected={
-              selectedCardIndex !== undefined &&
-              gameState.player.lockedCard !== null &&
-              gameState.player.lockedCard.id === gameState.player.hand[selectedCardIndex]?.id
-            }
+            isLockedCardSelected={gameState.player.lockedCard !== null}
           />
         )}
 

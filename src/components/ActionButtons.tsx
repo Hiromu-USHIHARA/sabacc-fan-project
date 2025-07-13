@@ -85,7 +85,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
             type="button"
             className="action-btn lock-btn"
             onClick={() => onAction?.('lock')}
-            disabled={!canLock || selectedCardIndex === undefined}
+            disabled={!canLock}
           >
             {isLockedCardSelected ? currentTexts.unlock : currentTexts.lock}
           </button>
