@@ -1,6 +1,6 @@
 import type React from 'react';
-import { useEffect, useState } from 'react';
-import type { GameState, PlayerAction } from '../types/sabacc';
+import { useEffect, useState, useCallback } from 'react';
+import type { GameState, PlayerAction, Card } from '../types/sabacc';
 import {
   calculateHandTotal,
   checkIdiotsArray,
@@ -16,6 +16,7 @@ import {
 import ActionButtons from './ActionButtons';
 import CoinToss from './CoinToss';
 import PlayerHand from './PlayerHand';
+import SabaccShiftModal from './SabaccShiftModal';
 import './SabaccGame.css';
 
 type Language = 'ja' | 'en';
@@ -36,6 +37,13 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
     number | undefined
   >();
   const [showCoinToss, setShowCoinToss] = useState(false);
+  const [showSabaccShift, setShowSabaccShift] = useState(false);
+  const [sabaccShiftData, setSabaccShiftData] = useState<{
+    playerHand: Card[];
+    dealerHand: Card[];
+    playerLockedCard: Card | null;
+    dealerLockedCard: Card | null;
+  } | null>(null);
   const [playerTurnPhase, setPlayerTurnPhase] = useState<
     'drawing' | 'exchanging' | 'locking'
   >('drawing');
@@ -90,6 +98,41 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
   };
 
   const currentTexts = texts[language];
+
+  // 勝敗判定とゲーム状態更新を行う関数
+  const determineWinnerAndUpdateGame = useCallback((gameStateToUpdate: GameState) => {
+    const playerTotal = calculateHandTotal(gameStateToUpdate.player.hand);
+    const dealerTotal = calculateHandTotal(gameStateToUpdate.dealer.hand);
+
+    // 特別な勝利条件をチェック
+    if (checkIdiotsArray(gameStateToUpdate.player.hand)) {
+      gameStateToUpdate.winner = 'player';
+      gameStateToUpdate.message = currentTexts.messages.idiotsArrayPlayer;
+    } else if (checkIdiotsArray(gameStateToUpdate.dealer.hand)) {
+      gameStateToUpdate.winner = 'dealer';
+      gameStateToUpdate.message = currentTexts.messages.idiotsArrayDealer;
+    } else if (checkPureSabacc(playerTotal)) {
+      gameStateToUpdate.winner = 'player';
+      gameStateToUpdate.message = currentTexts.messages.pureSabaccPlayer;
+    } else if (checkPureSabacc(dealerTotal)) {
+      gameStateToUpdate.winner = 'dealer';
+      gameStateToUpdate.message = currentTexts.messages.pureSabaccDealer;
+    } else {
+      gameStateToUpdate.winner = determineWinner(playerTotal, dealerTotal);
+      if (gameStateToUpdate.winner === 'player') {
+        gameStateToUpdate.message = currentTexts.messages.playerVictory;
+      } else if (gameStateToUpdate.winner === 'dealer') {
+        gameStateToUpdate.message = currentTexts.messages.dealerVictory;
+      } else {
+        // 引き分けの場合はコイントスを表示
+        setShowCoinToss(true);
+        return; // ここで処理を終了
+      }
+    }
+
+    gameStateToUpdate.gamePhase = 'finished';
+    setGameState(gameStateToUpdate);
+  }, [currentTexts.messages]);
 
   // ゲーム開始時のメッセージを設定
   useEffect(() => {
@@ -242,49 +285,28 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
           // 25%の確率でSabacc Shift
           if (Math.random() < 0.25) {
             // 干渉フィールドに置かれたカード以外を変更
-            finalGameState.player.hand = performSabaccShift(
+            const newPlayerHand = performSabaccShift(
               finalGameState.player.hand,
               finalGameState.player.lockedCard
             );
-            finalGameState.dealer.hand = performSabaccShift(
+            const newDealerHand = performSabaccShift(
               finalGameState.dealer.hand,
               finalGameState.dealer.lockedCard
             );
-            finalGameState.message = currentTexts.messages.sabaccShiftOccurred;
+
+            // Sabacc Shiftの結果をポップアップで表示
+            setSabaccShiftData({
+              playerHand: newPlayerHand,
+              dealerHand: newDealerHand,
+              playerLockedCard: finalGameState.player.lockedCard,
+              dealerLockedCard: finalGameState.dealer.lockedCard,
+            });
+            setShowSabaccShift(true);
+            return; // ポップアップが閉じられるまで待機
           }
 
-          // 勝敗判定
-          const playerTotal = calculateHandTotal(finalGameState.player.hand);
-          const dealerTotal = calculateHandTotal(finalGameState.dealer.hand);
-
-          // 特別な勝利条件をチェック
-          if (checkIdiotsArray(finalGameState.player.hand)) {
-            finalGameState.winner = 'player';
-            finalGameState.message = currentTexts.messages.idiotsArrayPlayer;
-          } else if (checkIdiotsArray(finalGameState.dealer.hand)) {
-            finalGameState.winner = 'dealer';
-            finalGameState.message = currentTexts.messages.idiotsArrayDealer;
-          } else if (checkPureSabacc(playerTotal)) {
-            finalGameState.winner = 'player';
-            finalGameState.message = currentTexts.messages.pureSabaccPlayer;
-          } else if (checkPureSabacc(dealerTotal)) {
-            finalGameState.winner = 'dealer';
-            finalGameState.message = currentTexts.messages.pureSabaccDealer;
-          } else {
-            finalGameState.winner = determineWinner(playerTotal, dealerTotal);
-            if (finalGameState.winner === 'player') {
-              finalGameState.message = currentTexts.messages.playerVictory;
-            } else if (finalGameState.winner === 'dealer') {
-              finalGameState.message = currentTexts.messages.dealerVictory;
-            } else {
-              // 引き分けの場合はコイントスを表示
-              setShowCoinToss(true);
-              return; // ここで処理を終了
-            }
-          }
-
-          finalGameState.gamePhase = 'finished';
-          setGameState(finalGameState);
+          // Sabacc Shiftが発生しなかった場合、直接勝敗判定
+          determineWinnerAndUpdateGame(finalGameState);
         }, 2000);
 
         setGameState(newGameState);
@@ -295,7 +317,19 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
     gameState.gamePhase,
     gameState,
     currentTexts.messages,
+    determineWinnerAndUpdateGame,
   ]);
+
+  const handleSabaccShiftComplete = () => {
+    setShowSabaccShift(false);
+    if (sabaccShiftData) {
+      const finalGameState = { ...gameState };
+      finalGameState.player.hand = sabaccShiftData.playerHand;
+      finalGameState.dealer.hand = sabaccShiftData.dealerHand;
+      finalGameState.message = currentTexts.messages.sabaccShiftOccurred;
+      determineWinnerAndUpdateGame(finalGameState);
+    }
+  };
 
   const handleCoinTossComplete = (winner: 'player' | 'dealer') => {
     setShowCoinToss(false);
@@ -315,6 +349,8 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
     setGameState(newGameState);
     setSelectedCardIndex(undefined);
     setShowCoinToss(false);
+    setShowSabaccShift(false);
+    setSabaccShiftData(null);
     setPlayerTurnPhase('drawing');
   };
 
@@ -410,6 +446,16 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         />
       )}
 
+      <SabaccShiftModal
+        isVisible={showSabaccShift}
+        onContinue={handleSabaccShiftComplete}
+        language={language}
+        playerHand={sabaccShiftData?.playerHand || []}
+        dealerHand={sabaccShiftData?.dealerHand || []}
+        playerLockedCard={sabaccShiftData?.playerLockedCard || null}
+        dealerLockedCard={sabaccShiftData?.dealerLockedCard || null}
+      />
+
       <CoinToss
         isVisible={showCoinToss}
         onComplete={handleCoinTossComplete}
@@ -420,3 +466,4 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 };
 
 export default SabaccGame;
+ 

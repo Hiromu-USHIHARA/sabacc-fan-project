@@ -83,3 +83,4 @@ const CardComponent: React.FC<CardProps> = ({
 };
 
 export default CardComponent;
+ 

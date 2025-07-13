@@ -281,3 +281,4 @@ const RulesModal: React.FC<RulesModalProps> = ({
 };
 
 export default RulesModal;
+ 
