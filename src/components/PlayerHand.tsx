@@ -33,7 +33,7 @@ const PlayerHand: React.FC<PlayerHandProps> = ({
     },
     en: {
       dealer: 'Dealer',
-      player: 'Player',
+      player: 'You',
       total: 'Total:',
       locked: 'Locked:',
       stood: 'Stood',

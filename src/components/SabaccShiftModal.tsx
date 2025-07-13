@@ -36,7 +36,7 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
     en: {
       title: '🎲 Sabacc Shift Occurred!',
       subtitle: 'Unlocked card values have changed',
-      playerHand: 'Player Hand',
+      playerHand: 'Your Hand',
       dealerHand: 'Dealer Hand',
       lockedCard: 'Locked Card',
       continue: 'Continue',

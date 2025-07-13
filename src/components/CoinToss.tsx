@@ -29,10 +29,10 @@ const CoinToss: React.FC<CoinTossProps> = ({
     },
     en: {
       title: 'Tie! Coin toss to determine winner',
-      player: 'Player',
+      player: 'You',
       dealer: 'Dealer',
       status: 'Flipping coin...',
-      playerVictory: 'Player wins!',
+      playerVictory: 'You win!',
       dealerVictory: 'Dealer wins!',
     },
   };
