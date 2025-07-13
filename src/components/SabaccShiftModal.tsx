@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { Card } from '../types/sabacc';
+import CardComponent from './Card';
 import './SabaccShiftModal.css';
 
 type Language = 'ja' | 'en';
@@ -46,37 +47,6 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
 
   const currentTexts = texts[language];
 
-  const getSuitSymbol = (suit: string | null) => {
-    switch (suit) {
-      case 'Flasks':
-        return '🧪';
-      case 'Sabers':
-        return '⚔️';
-      case 'Staves':
-        return '🦯';
-      case 'Coins':
-        return '🪙';
-      default:
-        return '⭐';
-    }
-  };
-
-  const getCardColor = (suit: string | null) => {
-    if (suit === null) return 'purple';
-    switch (suit) {
-      case 'Flasks':
-        return 'blue';
-      case 'Sabers':
-        return 'red';
-      case 'Staves':
-        return 'green';
-      case 'Coins':
-        return 'gold';
-      default:
-        return 'purple';
-    }
-  };
-
   return (
     <div className="sabacc-shift-modal-overlay">
       <div className="sabacc-shift-modal-content">
@@ -90,17 +60,12 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
               {playerHand.map((card, index) => (
                 <div
                   key={`player-${card.id}`}
-                  className={`sabacc-shift-card ${playerLockedCard?.id === card.id ? 'locked' : ''}`}
-                  style={{ borderColor: getCardColor(card.suit) }}
+                  className={`sabacc-shift-card-wrapper ${playerLockedCard?.id === card.id ? 'locked' : ''}`}
                 >
-                  <div className="sabacc-shift-card-header">
-                    <span className="sabacc-shift-card-value">{card.value}</span>
-                    <span className="sabacc-shift-card-suit">{getSuitSymbol(card.suit)}</span>
-                  </div>
-                  <div className="sabacc-shift-card-name">{card.name}</div>
-                  {playerLockedCard?.id === card.id && (
-                    <div className="sabacc-shift-card-lock">🔒</div>
-                  )}
+                  <CardComponent
+                    card={card}
+                    isLocked={playerLockedCard?.id === card.id}
+                  />
                 </div>
               ))}
             </div>
@@ -112,17 +77,12 @@ const SabaccShiftModal: React.FC<SabaccShiftModalProps> = ({
               {dealerHand.map((card, index) => (
                 <div
                   key={`dealer-${card.id}`}
-                  className={`sabacc-shift-card ${dealerLockedCard?.id === card.id ? 'locked' : ''}`}
-                  style={{ borderColor: getCardColor(card.suit) }}
+                  className={`sabacc-shift-card-wrapper ${dealerLockedCard?.id === card.id ? 'locked' : ''}`}
                 >
-                  <div className="sabacc-shift-card-header">
-                    <span className="sabacc-shift-card-value">{card.value}</span>
-                    <span className="sabacc-shift-card-suit">{getSuitSymbol(card.suit)}</span>
-                  </div>
-                  <div className="sabacc-shift-card-name">{card.name}</div>
-                  {dealerLockedCard?.id === card.id && (
-                    <div className="sabacc-shift-card-lock">🔒</div>
-                  )}
+                  <CardComponent
+                    card={card}
+                    isLocked={dealerLockedCard?.id === card.id}
+                  />
                 </div>
               ))}
             </div>
