@@ -31,7 +31,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 }) => {
   const texts = {
     ja: {
-      draw: '🃏 ドロー',
+      draw: '➕ ドロー',
       exchange: '🔄 交換',
       stand: '✋ スタンド',
       lock: '🔒 ロック',
@@ -39,7 +39,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       newGame: '🎮 新しいゲーム',
     },
     en: {
-      draw: '🃏 Draw',
+      draw: '➕ Draw',
       exchange: '🔄 Exchange',
       stand: '✋ Stand',
       lock: '🔒 Lock',
