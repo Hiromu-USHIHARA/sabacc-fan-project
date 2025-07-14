@@ -19,41 +19,41 @@ const TopPage: React.FC<TopPageProps> = ({
   const texts = {
     ja: {
       title: 'Sabacc Fan',
-      subtitle: 'スター・ウォーズに登場するカードゲームのファンメイド作品です',
+      subtitle: 'スター・ウォーズに登場するカードゲーム「Sabacc」のファンメイド作品です',
       description: [
-        'プレイヤーとディーラーが対戦するSabaccゲームです．',
-        '目標は手札の合計値を23または-23に近づけることです．',
+        'ディーラーと対戦するカードゲームです．',
+        '手札の合計値を23または-23に近づけることを目指します．',
       ],
       startButton: '🎮 ゲーム開始',
       rulesButton: '📖 ルール説明',
       languageButton: '🌐 English',
       features: [
         {
-          icon: '🧪⚔️🦯🪙',
-          text: '4つのスート（Flasks, Sabers, Staves, Coins）',
+          icon: '🃏',
+          text: 'ブラックジャックに似たシンプルなルール',
         },
-        { icon: '⭐', text: '8種類の特殊カード' },
-        { icon: '🎲', text: 'Sabacc Shift機能' },
-        { icon: '🏆', text: "特別な勝利条件（Idiot's Array, Pure Sabacc）" },
+        { icon: '⭐', text: '4種類のスートと8種類の特殊カード' },
+        { icon: '🎲', text: 'ランダムに手札が変化するSabacc Shift' },
+        { icon: '🏆', text: "特別な役（Idiot's Array, Pure Sabacc）" },
       ],
     },
     en: {
       title: 'Sabacc Fan',
-      subtitle: 'A fan-made implementation of the card game from Star Wars',
+      subtitle: 'A fan-made implementation of the card game "Sabacc" from Star Wars',
       description: [
-        'A Sabacc game where you compete against the dealer.',
-        'The goal is to get your hand total close to 23 or -23.',
+        'A card game where you compete against the dealer.',
+        'Make your hand total close to 23 or -23.',
       ],
       startButton: '🎮 Start Game',
       rulesButton: '📖 Rules',
       languageButton: '🌐 日本語',
       features: [
-        { icon: '🧪⚔️🦯🪙', text: '4 suits (Flasks, Sabers, Staves, Coins)' },
-        { icon: '⭐', text: '8 special cards' },
-        { icon: '🎲', text: 'Sabacc Shift feature' },
+        { icon: '🃏', text: 'A simple rule similar to Blackjack' },
+        { icon: '⭐', text: '4 suits and 8 special cards' },
+        { icon: '🎲', text: 'Randomly changing hand with Sabacc Shift' },
         {
           icon: '🏆',
-          text: "Special winning conditions (Idiot's Array, Pure Sabacc)",
+          text: "Special winning conditions (Idiot's Array, Pure Sabacc)"
         },
       ],
     },
