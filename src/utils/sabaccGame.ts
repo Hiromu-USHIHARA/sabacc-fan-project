@@ -183,8 +183,8 @@ export function determineWinner(
   }
 
   // 23に近い方が勝ち
-  const playerDiff = Math.abs(playerTotal - 23);
-  const dealerDiff = Math.abs(dealerTotal - 23);
+  const playerDiff = Math.min(Math.abs(playerTotal - 23), Math.abs(playerTotal + 23));
+  const dealerDiff = Math.min(Math.abs(dealerTotal - 23), Math.abs(dealerTotal + 23));
 
   return playerDiff < dealerDiff ? 'player' : 'dealer';
 }
