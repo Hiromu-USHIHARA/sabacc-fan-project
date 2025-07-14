@@ -7,12 +7,14 @@ type Language = 'ja' | 'en';
 interface CoinTossProps {
   isVisible: boolean;
   onComplete: (winner: 'player' | 'dealer') => void;
+  onClose?: () => void;
   language?: Language;
 }
 
 const CoinToss: React.FC<CoinTossProps> = ({
   isVisible,
   onComplete,
+  onClose,
   language = 'ja',
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -26,6 +28,7 @@ const CoinToss: React.FC<CoinTossProps> = ({
       status: 'コインを投げています...',
       playerVictory: 'プレイヤーの勝利！',
       dealerVictory: 'ディーラーの勝利！',
+      closeButton: '閉じる',
     },
     en: {
       title: 'Tie! Coin toss to determine winner',
@@ -34,6 +37,7 @@ const CoinToss: React.FC<CoinTossProps> = ({
       status: 'Flipping coin...',
       playerVictory: 'You win!',
       dealerVictory: 'Dealer wins!',
+      closeButton: 'Close',
     },
   };
 
@@ -95,6 +99,17 @@ const CoinToss: React.FC<CoinTossProps> = ({
         )}
 
         {!result && <div className="coin-status">{currentTexts.status}</div>}
+        
+        {onClose && (
+          <button 
+            type="button"
+            className="coin-toss-close-btn" 
+            onClick={onClose}
+            disabled={isAnimating}
+          >
+            {currentTexts.closeButton}
+          </button>
+        )}
       </div>
     </div>
   );

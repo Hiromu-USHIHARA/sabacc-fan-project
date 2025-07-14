@@ -513,6 +513,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
       <CoinToss
         isVisible={showCoinToss}
         onComplete={handleCoinTossComplete}
+        onClose={() => setShowCoinToss(false)}
         language={language}
       />
     </div>
