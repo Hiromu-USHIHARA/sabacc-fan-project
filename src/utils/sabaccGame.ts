@@ -62,7 +62,7 @@ const SPECIAL_CARDS: Array<{ name: CardName; suit: Suit; value: number }> = [
   { name: 'The Evil One', suit: null, value: -15 },
   { name: 'The Queen of Air and Darkness', suit: null, value: -2 },
   { name: 'Demise', suit: null, value: -13 },
-  { name: 'The Star', suit: null, value: -10 },
+  { name: 'The Star', suit: null, value: -17 },
 ];
 
 // デッキを作成
