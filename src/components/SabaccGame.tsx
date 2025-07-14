@@ -107,16 +107,34 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
     const dealerTotal = calculateHandTotal(gameStateToUpdate.dealer.hand);
 
     // 特別な勝利条件をチェック
-    if (checkIdiotsArray(gameStateToUpdate.player.hand)) {
+    const playerHasIdiotsArray = checkIdiotsArray(gameStateToUpdate.player.hand);
+    const dealerHasIdiotsArray = checkIdiotsArray(gameStateToUpdate.dealer.hand);
+    const playerHasPureSabacc = checkPureSabacc(playerTotal);
+    const dealerHasPureSabacc = checkPureSabacc(dealerTotal);
+
+    // 両者がイディオットズ・アレイの場合
+    if (playerHasIdiotsArray && dealerHasIdiotsArray) {
+      setShowCoinToss(true);
+      return;
+    }
+    
+    // 両者がピュア・サバックの場合
+    if (playerHasPureSabacc && dealerHasPureSabacc) {
+      setShowCoinToss(true);
+      return;
+    }
+
+    // 片方のみの特別な勝利条件
+    if (playerHasIdiotsArray) {
       gameStateToUpdate.winner = 'player';
       gameStateToUpdate.message = currentTexts.messages.idiotsArrayPlayer;
-    } else if (checkIdiotsArray(gameStateToUpdate.dealer.hand)) {
+    } else if (dealerHasIdiotsArray) {
       gameStateToUpdate.winner = 'dealer';
       gameStateToUpdate.message = currentTexts.messages.idiotsArrayDealer;
-    } else if (checkPureSabacc(playerTotal)) {
+    } else if (playerHasPureSabacc) {
       gameStateToUpdate.winner = 'player';
       gameStateToUpdate.message = currentTexts.messages.pureSabaccPlayer;
-    } else if (checkPureSabacc(dealerTotal)) {
+    } else if (dealerHasPureSabacc) {
       gameStateToUpdate.winner = 'dealer';
       gameStateToUpdate.message = currentTexts.messages.pureSabaccDealer;
     } else {
