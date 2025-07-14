@@ -36,7 +36,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       stand: '✋ スタンド',
       lock: '🔒 ロック',
       unlock: '🔓 ロック解除',
-      newGame: '🎮 新しいゲーム',
+      newGame: '🎮 もう一度遊ぶ',
     },
     en: {
       draw: '➕ Draw',
@@ -44,7 +44,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       stand: '✋ Stand',
       lock: '🔒 Lock',
       unlock: '🔓 Unlock',
-      newGame: '🎮 New Game',
+      newGame: '🎮 Play Again',
     },
   };
 
