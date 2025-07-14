@@ -258,17 +258,46 @@ export function getDealerStrategy(
   shouldStand: boolean;
   exchangeCardIndex?: number;
   lockCardIndex?: number;
+  drawCount?: number; // 何枚引くかを指定
 } {
-  // 基本戦略（プレイヤーの手札も考慮）
-  const action = getDealerAction(hand, playerHand);
+  const total = calculateHandTotal(hand);
+  const playerTotal = calculateHandTotal(playerHand);
 
-  // 交換するカードを選択
-  let exchangeCardIndex: number | undefined;
-  if (action === 'exchange' && hand.length > 0) {
-    // 爆発回避のため、最も数値が大きい（または小さい）カードを交換
-    const total = calculateHandTotal(hand);
+  // 手札が5枚の場合はスタンド
+  if (hand.length >= 5) {
+    return {
+      shouldDraw: false,
+      shouldExchange: false,
+      shouldLock: false,
+      shouldStand: true,
+    };
+  }
+
+  // Idiot's Arrayの可能性をチェック
+  if (checkIdiotsArray(hand)) {
+    return {
+      shouldDraw: false,
+      shouldExchange: false,
+      shouldLock: false,
+      shouldStand: true,
+    };
+  }
+
+  // Pure Sabaccの場合はスタンド
+  if (checkPureSabacc(total)) {
+    return {
+      shouldDraw: false,
+      shouldExchange: false,
+      shouldLock: false,
+      shouldStand: true,
+    };
+  }
+
+  // 爆発状態（スコアが ±24 を超えている）
+  if (Math.abs(total) >= 24) {
+    // 最も数値が大きい（または小さい）カードを交換
+    let exchangeCardIndex: number | undefined;
     if (total >= 24) {
-      // 爆発状態の場合、最も数値が大きいカードを交換
       let maxValue = -Infinity;
       for (let i = 0; i < hand.length; i++) {
         if (hand[i].value > maxValue) {
@@ -276,17 +305,7 @@ export function getDealerStrategy(
           exchangeCardIndex = i;
         }
       }
-    } else if (total <= -24) {
-      // 負の爆発状態の場合、最も数値が小さいカードを交換
-      let minValue = Infinity;
-      for (let i = 0; i < hand.length; i++) {
-        if (hand[i].value < minValue) {
-          minValue = hand[i].value;
-          exchangeCardIndex = i;
-        }
-      }
     } else {
-      // 通常の場合、最も価値の低いカードを交換対象とする
       let minValue = Infinity;
       for (let i = 0; i < hand.length; i++) {
         if (hand[i].value < minValue) {
@@ -295,46 +314,209 @@ export function getDealerStrategy(
         }
       }
     }
+
+    return {
+      shouldDraw: false,
+      shouldExchange: true,
+      shouldLock: false,
+      shouldStand: false,
+      exchangeCardIndex,
+    };
   }
 
-  // ロックするカードを選択
-  let lockCardIndex: number | undefined;
-  if (action === 'lock' && hand.length > 0) {
-    // 特殊カードを優先的にロック
-    const specialCards = hand.filter((card) => card.suit === null);
-    const highValueCards = hand.filter((card) => card.value >= 10);
-    const idiotCard = hand.find((card) => card.name === 'The Idiot');
+  // スコアが ±20 未満の場合
+  if (Math.abs(total) < 20) {
+    // 手札の枚数とスコアに応じて複数枚引く
+    let drawCount = 1;
+    if (hand.length <= 3 && Math.abs(total) < 15) {
+      drawCount = 2; // 手札が少なく、スコアが低い場合は2枚引く
+    } else if (hand.length <= 2 && Math.abs(total) < 10) {
+      drawCount = 3; // 手札が非常に少なく、スコアが非常に低い場合は3枚引く
+    }
 
-    if (idiotCard) {
-      // The Idiot (0) を最優先でロック
-      lockCardIndex = hand.findIndex((card) => card.id === idiotCard.id);
-    } else if (specialCards.length > 0) {
-      // 特殊カードを優先的にロック
-      lockCardIndex = hand.findIndex((card) => card.id === specialCards[0].id);
-    } else if (highValueCards.length > 0) {
-      // 高価値カードをロック
-      lockCardIndex = hand.findIndex(
-        (card) => card.id === highValueCards[0].id
-      );
-    } else {
-      // 最も価値の高いカードをロック
-      let maxValue = -Infinity;
-      for (let i = 0; i < hand.length; i++) {
-        if (hand[i].value > maxValue) {
-          maxValue = hand[i].value;
-          lockCardIndex = i;
+    return {
+      shouldDraw: true,
+      shouldExchange: false,
+      shouldLock: false,
+      shouldStand: false,
+      drawCount,
+    };
+  }
+
+  // スコアが ±20〜±22 の場合
+  if (Math.abs(total) >= 20 && Math.abs(total) <= 22) {
+    if (total > playerTotal) {
+      return {
+        shouldDraw: false,
+        shouldExchange: false,
+        shouldLock: false,
+        shouldStand: true,
+      };
+    } else if (total < playerTotal) {
+      // プレイヤーより低い場合は、1枚引くか交換する
+      const shouldDraw = Math.random() < 0.5;
+      if (shouldDraw) {
+        return {
+          shouldDraw: true,
+          shouldExchange: false,
+          shouldLock: false,
+          shouldStand: false,
+          drawCount: 1,
+        };
+      } else {
+        // 最も価値の低いカードを交換
+        let minValue = Infinity;
+        let exchangeCardIndex: number | undefined;
+        for (let i = 0; i < hand.length; i++) {
+          if (hand[i].value < minValue) {
+            minValue = hand[i].value;
+            exchangeCardIndex = i;
+          }
         }
+        return {
+          shouldDraw: false,
+          shouldExchange: true,
+          shouldLock: false,
+          shouldStand: false,
+          exchangeCardIndex,
+        };
+      }
+    } else {
+      // 同点時：スタンド or ロック（50%ランダム）
+      const shouldStand = Math.random() < 0.5;
+      if (shouldStand) {
+        return {
+          shouldDraw: false,
+          shouldExchange: false,
+          shouldLock: false,
+          shouldStand: true,
+        };
+      } else {
+        // ロックするカードを選択
+        const specialCards = hand.filter((card) => card.suit === null);
+        const highValueCards = hand.filter((card) => card.value >= 10);
+        const idiotCard = hand.find((card) => card.name === 'The Idiot');
+
+        let lockCardIndex: number | undefined;
+        if (idiotCard) {
+          lockCardIndex = hand.findIndex((card) => card.id === idiotCard.id);
+        } else if (specialCards.length > 0) {
+          lockCardIndex = hand.findIndex((card) => card.id === specialCards[0].id);
+        } else if (highValueCards.length > 0) {
+          lockCardIndex = hand.findIndex((card) => card.id === highValueCards[0].id);
+        } else {
+          let maxValue = -Infinity;
+          for (let i = 0; i < hand.length; i++) {
+            if (hand[i].value > maxValue) {
+              maxValue = hand[i].value;
+              lockCardIndex = i;
+            }
+          }
+        }
+
+        return {
+          shouldDraw: false,
+          shouldExchange: false,
+          shouldLock: true,
+          shouldStand: false,
+          lockCardIndex,
+        };
+      }
+    }
+  }
+
+  // スコアが ±23（Pure Sabacc）の場合
+  if (Math.abs(total) === 23) {
+    return {
+      shouldDraw: false,
+      shouldExchange: false,
+      shouldLock: false,
+      shouldStand: true,
+    };
+  }
+
+  // それ以外の場合はランダムに行動を決定
+  const actions: Array<'draw' | 'exchange' | 'lock' | 'stand'> = ['draw', 'exchange', 'lock', 'stand'];
+  const weights = [0.3, 0.3, 0.2, 0.2];
+
+  const random = Math.random();
+  let cumulativeWeight = 0;
+
+  for (let i = 0; i < actions.length; i++) {
+    cumulativeWeight += weights[i];
+    if (random < cumulativeWeight) {
+      const action = actions[i];
+      if (action === 'draw') {
+        return {
+          shouldDraw: true,
+          shouldExchange: false,
+          shouldLock: false,
+          shouldStand: false,
+          drawCount: 1,
+        };
+      } else if (action === 'exchange') {
+        // 最も価値の低いカードを交換
+        let minValue = Infinity;
+        let exchangeCardIndex: number | undefined;
+        for (let i = 0; i < hand.length; i++) {
+          if (hand[i].value < minValue) {
+            minValue = hand[i].value;
+            exchangeCardIndex = i;
+          }
+        }
+        return {
+          shouldDraw: false,
+          shouldExchange: true,
+          shouldLock: false,
+          shouldStand: false,
+          exchangeCardIndex,
+        };
+      } else if (action === 'lock') {
+        // ロックするカードを選択
+        const specialCards = hand.filter((card) => card.suit === null);
+        const highValueCards = hand.filter((card) => card.value >= 10);
+        const idiotCard = hand.find((card) => card.name === 'The Idiot');
+
+        let lockCardIndex: number | undefined;
+        if (idiotCard) {
+          lockCardIndex = hand.findIndex((card) => card.id === idiotCard.id);
+        } else if (specialCards.length > 0) {
+          lockCardIndex = hand.findIndex((card) => card.id === specialCards[0].id);
+        } else if (highValueCards.length > 0) {
+          lockCardIndex = hand.findIndex((card) => card.id === highValueCards[0].id);
+        } else {
+          let maxValue = -Infinity;
+          for (let i = 0; i < hand.length; i++) {
+            if (hand[i].value > maxValue) {
+              maxValue = hand[i].value;
+              lockCardIndex = i;
+            }
+          }
+        }
+
+        return {
+          shouldDraw: false,
+          shouldExchange: false,
+          shouldLock: true,
+          shouldStand: false,
+          lockCardIndex,
+        };
+      } else {
+        return {
+          shouldDraw: false,
+          shouldExchange: false,
+          shouldLock: false,
+          shouldStand: true,
+        };
       }
     }
   }
 
   return {
-    shouldDraw: action === 'draw',
-    shouldExchange: action === 'exchange',
-    shouldLock: action === 'lock',
-    shouldStand: action === 'stand',
-    exchangeCardIndex,
-    lockCardIndex,
+    shouldDraw: false,
+    shouldExchange: false,
+    shouldLock: false,
+    shouldStand: true,
   };
 }
 

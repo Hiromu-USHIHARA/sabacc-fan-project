@@ -235,52 +235,75 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
       gameState.currentTurn === 'dealer' &&
       gameState.gamePhase === 'playing'
     ) {
-      const dealer = { ...gameState.dealer };
-
-      // ディーラーの戦略を決定
+      // ディーラーの行動を逐次実行
       setTimeout(() => {
         const newGameState = { ...gameState };
-        const strategy = getDealerStrategy(
-          dealer.hand,
-          newGameState.player.hand
-        );
-
-        // ディーラーは複数の行動を一度に実行
+        let dealer = { ...newGameState.dealer };
         let actionCount = 0;
-        const maxActions = 3; // 最大3回の行動まで
+        const maxActions = 5; // 最大5回の行動まで
 
-        // 1. カードを引く（必要に応じて）
-        if (strategy.shouldDraw && dealer.hand.length < 5 && actionCount < maxActions) {
-          const { card, newDeck } = drawCard(newGameState.deck);
-          dealer.hand.push(card);
-          newGameState.deck = newDeck;
-          actionCount++;
-        }
+        // 複数の行動を逐次実行
+        while (actionCount < maxActions && !dealer.hasStood && dealer.hand.length < 5) {
+          // 現在の状態で戦略を決定
+          const strategy = getDealerStrategy(
+            dealer.hand,
+            newGameState.player.hand
+          );
 
-        // 2. カードを交換する（必要に応じて）
-        if (
-          strategy.shouldExchange &&
-          newGameState.deck.length > 0 &&
-          actionCount < maxActions
-        ) {
-          const exchangeIndex = strategy.exchangeCardIndex ?? 0;
-          const { card: newCard, newDeck } = drawCard(newGameState.deck);
-          const oldCard = dealer.hand[exchangeIndex];
-          dealer.hand[exchangeIndex] = newCard;
-          newGameState.deck = [oldCard, ...newDeck];
-          actionCount++;
-        }
+          let actionTaken = false;
 
-        // 3. カードをロックする（必要に応じて）
-        if (strategy.shouldLock && !dealer.lockedCard && actionCount < maxActions) {
-          const lockIndex = strategy.lockCardIndex ?? 0;
-          dealer.lockedCard = dealer.hand[lockIndex];
-          actionCount++;
-        }
+          // 1. カードを引く（必要に応じて）
+          if (strategy.shouldDraw && dealer.hand.length < 5 && !actionTaken) {
+            const drawCount = strategy.drawCount || 1;
+            const actualDrawCount = Math.min(
+              drawCount,
+              5 - dealer.hand.length, // 最大5枚まで
+              maxActions - actionCount // 最大行動回数まで
+            );
+            
+            for (let i = 0; i < actualDrawCount; i++) {
+              const { card, newDeck } = drawCard(newGameState.deck);
+              dealer.hand.push(card);
+              newGameState.deck = newDeck;
+              actionCount++;
+              actionTaken = true;
+            }
+          }
 
-        // 4. スタンドする
-        if (strategy.shouldStand) {
-          dealer.hasStood = true;
+          // 2. カードを交換する（必要に応じて）
+          if (
+            strategy.shouldExchange &&
+            newGameState.deck.length > 0 &&
+            actionCount < maxActions &&
+            !actionTaken
+          ) {
+            const exchangeIndex = strategy.exchangeCardIndex ?? 0;
+            const { card: newCard, newDeck } = drawCard(newGameState.deck);
+            const oldCard = dealer.hand[exchangeIndex];
+            dealer.hand[exchangeIndex] = newCard;
+            newGameState.deck = [oldCard, ...newDeck];
+            actionCount++;
+            actionTaken = true;
+          }
+
+          // 3. カードをロックする（必要に応じて）
+          if (strategy.shouldLock && !dealer.lockedCard && actionCount < maxActions && !actionTaken) {
+            const lockIndex = strategy.lockCardIndex ?? 0;
+            dealer.lockedCard = dealer.hand[lockIndex];
+            actionCount++;
+            actionTaken = true;
+          }
+
+          // 4. スタンドする
+          if (strategy.shouldStand && !actionTaken) {
+            dealer.hasStood = true;
+            actionTaken = true;
+          }
+
+          // 行動を取らなかった場合はループを終了
+          if (!actionTaken) {
+            break;
+          }
         }
 
         newGameState.dealer = dealer;
