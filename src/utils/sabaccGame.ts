@@ -149,8 +149,17 @@ export function determineWinner(
   dealerTotal: number
 ): 'player' | 'dealer' | 'tie' {
   // 爆発チェック
-  if (checkBombOut(playerTotal)) return 'dealer';
-  if (checkBombOut(dealerTotal)) return 'player';
+  const playerBombOut = checkBombOut(playerTotal);
+  const dealerBombOut = checkBombOut(dealerTotal);
+  
+  if (playerBombOut && dealerBombOut) {
+    // 両方が爆発している場合はディーラーの勝利
+    return 'dealer';
+  } else if (playerBombOut) {
+    return 'dealer';
+  } else if (dealerBombOut) {
+    return 'player';
+  }
 
   // Idiot's Arrayチェック
   // 注意: Idiot's Arrayは最強なので，ここではチェックしない（SabaccGame.tsxでチェック）
