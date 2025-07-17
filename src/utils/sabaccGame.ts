@@ -540,6 +540,33 @@ export function performSabaccShift(
     13, 14, 15,
   ];
 
+  // 値からカード名へのマッピング
+  const valueToName: { [key: number]: CardName } = {
+    [-15]: 'The Evil One',
+    [-14]: 'Moderation',
+    [-13]: 'Demise',
+    [-11]: 'Balance',
+    [-10]: '10',
+    [-8]: 'Endurance',
+    [-2]: 'The Queen of Air and Darkness',
+    [0]: 'The Idiot',
+    [1]: '1',
+    [2]: '2',
+    [3]: '3',
+    [4]: '4',
+    [5]: '5',
+    [6]: '6',
+    [7]: '7',
+    [8]: '8',
+    [9]: '9',
+    [10]: '10',
+    [11]: '11',
+    [12]: 'Commander',
+    [13]: 'Mistress',
+    [14]: 'Master',
+    [15]: 'Ace',
+  };
+
   return hand.map((card) => {
     // ロックされたカードは変更しない
     if (lockedCard && card.id === lockedCard.id) {
@@ -549,12 +576,14 @@ export function performSabaccShift(
     if (card.suit === null) {
       // 特殊カードは値のみ変更
       const newValue = values[Math.floor(Math.random() * values.length)];
-      return { ...card, value: newValue };
+      const newName = valueToName[newValue];
+      return { ...card, value: newValue, name: newName };
     } else {
       // 通常カードはスートと値の両方を変更
       const newSuit = suits[Math.floor(Math.random() * suits.length)];
       const newValue = values[Math.floor(Math.random() * values.length)];
-      return { ...card, suit: newSuit, value: newValue };
+      const newName = valueToName[newValue];
+      return { ...card, suit: newSuit, value: newValue, name: newName };
     }
   });
 }
