@@ -180,11 +180,19 @@ const RulesModal: React.FC<RulesModalProps> = ({
       type="button"
       className="modal-overlay"
       onClick={onClose}
-      onKeyDown={(e) => (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') && onClose()}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      }}
       aria-label="Close rules modal"
     >
       <div 
         className="modal-content" 
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
       >
         <button type="button" className="modal-close" onClick={onClose}>
           {currentTexts.close}
