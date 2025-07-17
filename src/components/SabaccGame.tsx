@@ -342,7 +342,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
               finalGameState.player.lockedCard,
               finalGameState.deck
             );
-            const { newHand: newDealerHand, newDeck: newDeck } = performSabaccShift(
+            const { newHand: newDealerHand } = performSabaccShift(
               finalGameState.dealer.hand,
               finalGameState.dealer.lockedCard,
               deckAfterPlayer
