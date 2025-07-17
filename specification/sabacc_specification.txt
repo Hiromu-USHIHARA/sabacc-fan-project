@@ -130,3 +130,13 @@
 - CSS: Styling with modern features
 
 ---
+
+開発用プロンプト
+
+```
+このプロジェクトはstar warsに出てくるカードゲームSabacc@https://starwars.fandom.com/wiki/Sabacc のファンメイド作品です
+仕様書は @/specification にあります
+まずファイルを確認してプロジェクトの構成と実装内容を理解してください
+```
+
+---
