@@ -177,7 +177,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
 
     switch (action) {
       case 'draw':
-        if (player.hand.length < 5 && playerTurnPhase === 'drawing') {
+        if (playerTurnPhase === 'drawing') {
           const { card, newDeck } = drawCard(newGameState.deck);
           player.hand.push(card);
           newGameState.deck = newDeck;
@@ -261,7 +261,7 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
         const maxActions = 5; // 最大5回の行動まで
 
         // 複数の行動を逐次実行
-        while (actionCount < maxActions && !dealer.hasStood && dealer.hand.length < 5) {
+        while (actionCount < maxActions && !dealer.hasStood) {
           // 現在の状態で戦略を決定
           const strategy = getDealerStrategy(
             dealer.hand,
@@ -271,11 +271,10 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
           let actionTaken = false;
 
           // 1. カードを引く（必要に応じて）
-          if (strategy.shouldDraw && dealer.hand.length < 5 && !actionTaken) {
+          if (strategy.shouldDraw && !actionTaken) {
             const drawCount = strategy.drawCount || 1;
             const actualDrawCount = Math.min(
               drawCount,
-              5 - dealer.hand.length, // 最大5枚まで
               maxActions - actionCount // 最大行動回数まで
             );
             
@@ -409,7 +408,6 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
   const canDraw =
     gameState.currentTurn === 'player' &&
     gameState.gamePhase === 'playing' &&
-    gameState.player.hand.length < 5 &&
     playerTurnPhase === 'drawing';
 
   const canExchange =
