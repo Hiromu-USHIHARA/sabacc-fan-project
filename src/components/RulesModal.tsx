@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useEffect, useRef } from 'react';
 import './RulesModal.css';
 
 type Language = 'ja' | 'en';
@@ -14,6 +15,23 @@ const RulesModal: React.FC<RulesModalProps> = ({
   onClose,
   language,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
   const texts = {
     ja: {
       title: 'Sabacc ルール説明',
@@ -188,6 +206,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
       aria-label="Close rules modal"
     >
       <div 
+        ref={modalRef}
         className="modal-content" 
         onClick={(e) => e.stopPropagation()}
         onKeyDown={(e) => e.stopPropagation()}
