@@ -379,6 +379,8 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
       finalGameState.player.hand = sabaccShiftData.playerHand;
       finalGameState.dealer.hand = sabaccShiftData.dealerHand;
       finalGameState.message = currentTexts.messages.sabaccShiftOccurred;
+      finalGameState.gamePhase = 'playing'; // ゲームフェーズをリセット
+      setGameState(finalGameState); // まずゲーム状態を更新
       determineWinnerAndUpdateGame(finalGameState);
     }
   };

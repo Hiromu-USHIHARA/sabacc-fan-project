@@ -536,17 +536,17 @@ export function performSabaccShift(
 ): Card[] {
   const suits: Suit[] = ['Flasks', 'Sabers', 'Staves', 'Coins'];
   const values = [
-    -15, -14, -13, -11, -10, -8, -2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    -17, -15, -14, -13, -11, -8, -2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
     13, 14, 15,
   ];
 
   // 値からカード名へのマッピング
   const valueToName: { [key: number]: CardName } = {
+    [-17]: 'The Star',
     [-15]: 'The Evil One',
     [-14]: 'Moderation',
     [-13]: 'Demise',
     [-11]: 'Balance',
-    [-10]: '10',
     [-8]: 'Endurance',
     [-2]: 'The Queen of Air and Darkness',
     [0]: 'The Idiot',
