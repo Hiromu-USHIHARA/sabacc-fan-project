@@ -116,3 +116,4 @@ const CoinToss: React.FC<CoinTossProps> = ({
 };
 
 export default CoinToss;
+ 
