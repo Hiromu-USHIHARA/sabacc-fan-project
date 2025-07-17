@@ -336,13 +336,15 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
           // 25%の確率でSabacc Shift
           if (Math.random() < 0.25) {
             // ロックされたカード以外を変更
-            const newPlayerHand = performSabaccShift(
+            const { newHand: newPlayerHand, newDeck: deckAfterPlayer } = performSabaccShift(
               finalGameState.player.hand,
-              finalGameState.player.lockedCard
+              finalGameState.player.lockedCard,
+              finalGameState.deck
             );
-            const newDealerHand = performSabaccShift(
+            const { newHand: newDealerHand } = performSabaccShift(
               finalGameState.dealer.hand,
-              finalGameState.dealer.lockedCard
+              finalGameState.dealer.lockedCard,
+              deckAfterPlayer
             );
 
             // Sabacc Shiftの結果をポップアップで表示
@@ -378,6 +380,8 @@ const SabaccGame: React.FC<SabaccGameProps> = ({
       finalGameState.player.hand = sabaccShiftData.playerHand;
       finalGameState.dealer.hand = sabaccShiftData.dealerHand;
       finalGameState.message = currentTexts.messages.sabaccShiftOccurred;
+      finalGameState.gamePhase = 'playing'; // ゲームフェーズをリセット
+      setGameState(finalGameState); // まずゲーム状態を更新
       determineWinnerAndUpdateGame(finalGameState);
     }
   };
