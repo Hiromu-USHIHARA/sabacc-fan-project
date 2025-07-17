@@ -529,63 +529,35 @@ export function getDealerStrategy(
   };
 }
 
-// Sabacc Shiftを実行
+// Sabacc Shiftを実行（山札から新しいカードを配る方式）
 export function performSabaccShift(
   hand: Card[],
-  lockedCard: Card | null
-): Card[] {
-  const suits: Suit[] = ['Flasks', 'Sabers', 'Staves', 'Coins'];
-  const values = [
-    -17, -15, -14, -13, -11, -8, -2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-    13, 14, 15,
-  ];
+  lockedCard: Card | null,
+  deck: Card[]
+): { newHand: Card[]; newDeck: Card[] } {
+  // 山札をシャッフル
+  const shuffledDeck = shuffleDeck([...deck]);
+  let currentDeck = shuffledDeck;
+  const newHand: Card[] = [];
 
-  // 値からカード名へのマッピング
-  const valueToName: { [key: number]: CardName } = {
-    [-17]: 'The Star',
-    [-15]: 'The Evil One',
-    [-14]: 'Moderation',
-    [-13]: 'Demise',
-    [-11]: 'Balance',
-    [-8]: 'Endurance',
-    [-2]: 'The Queen of Air and Darkness',
-    [0]: 'The Idiot',
-    [1]: '1',
-    [2]: '2',
-    [3]: '3',
-    [4]: '4',
-    [5]: '5',
-    [6]: '6',
-    [7]: '7',
-    [8]: '8',
-    [9]: '9',
-    [10]: '10',
-    [11]: '11',
-    [12]: 'Commander',
-    [13]: 'Mistress',
-    [14]: 'Master',
-    [15]: 'Ace',
-  };
-
-  return hand.map((card) => {
+  for (const card of hand) {
     // ロックされたカードは変更しない
     if (lockedCard && card.id === lockedCard.id) {
-      return card;
-    }
-
-    if (card.suit === null) {
-      // 特殊カードは値のみ変更
-      const newValue = values[Math.floor(Math.random() * values.length)];
-      const newName = valueToName[newValue];
-      return { ...card, value: newValue, name: newName };
+      newHand.push(card);
     } else {
-      // 通常カードはスートと値の両方を変更
-      const newSuit = suits[Math.floor(Math.random() * suits.length)];
-      const newValue = values[Math.floor(Math.random() * values.length)];
-      const newName = valueToName[newValue];
-      return { ...card, suit: newSuit, value: newValue, name: newName };
+      // 山札から新しいカードを引く
+      if (currentDeck.length > 0) {
+        const { card: newCard, newDeck } = drawCard(currentDeck);
+        newHand.push(newCard);
+        currentDeck = newDeck;
+      } else {
+        // 山札が空の場合は元のカードを保持
+        newHand.push(card);
+      }
     }
-  });
+  }
+
+  return { newHand, newDeck: currentDeck };
 }
 
 // ゲームを初期化
