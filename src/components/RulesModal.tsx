@@ -81,7 +81,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
           steps: [
             "まず，Idiot's Arrayがあるかチェックします",
             '次に，Pure Sabaccがあるかチェックします',
-            '爆発していないかチェックします',
+            '爆発していないかチェックします（両者爆発の場合はディーラーの勝利になります）',
             '最後に，手札の合計が23または-23に近い方が勝利です（同じ場合はコイントスで決まります）',
           ],
           details: [
@@ -158,7 +158,7 @@ const RulesModal: React.FC<RulesModalProps> = ({
           steps: [
             "First, check for Idiot's Array",
             'Next, check for Pure Sabacc',
-            'Check for Bomb Out',
+            'Check for Bomb Out (if both players explode, the dealer wins)',
             'Finally, the hand total closest to 23 or -23 wins (if tied, decided by coin toss)',
           ],
           details: [
